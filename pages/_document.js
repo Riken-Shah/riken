@@ -10,7 +10,8 @@ export default class extends Document {
     try {
       ctx.renderPage = () =>
         originalRenderPage({
-          enhanceApp: App => props => sheet.collectStyles(<App {...props} />)
+          enhanceApp: (App) => (props) =>
+            sheet.collectStyles(<App {...props} />)
         })
 
       const documentProps = await Document.getInitialProps(ctx)
@@ -39,16 +40,32 @@ export default class extends Document {
 
   get helmetHeadComponents () {
     return Object.keys(this.props.helmet)
-      .filter(el => el !== 'htmlAttributes' && el !== 'bodyAttributes')
-      .map(el => this.props.helmet[el].toComponent())
+      .filter((el) => el !== 'htmlAttributes' && el !== 'bodyAttributes')
+      .map((el) => this.props.helmet[el].toComponent())
   }
 
   render () {
     return (
       <Html {...this.helmetHtmlAttrComponents}>
         <Head>
-          { this.helmetJsx }
-          { this.helmetHeadComponents }
+          {this.helmetJsx}
+          {this.helmetHeadComponents}
+          <link
+            href='//db.onlinewebfonts.com/c/2206d6cc490084998d531e8c1b2cbb4a?family=Druk+Wide+Bold'
+            rel='stylesheet'
+            type='text/css'
+          />
+          <link
+            href='//db.onlinewebfonts.com/c/40794b621791bf498f2f06237862031f?family=GT+America+Extended+Bold'
+            rel='stylesheet'
+            type='text/css'
+          />
+          <link rel='preconnect' href='https://fonts.googleapis.com' />
+          <link rel='preconnect' href='https://fonts.gstatic.com' crossorigin />
+          <link
+            href='https://fonts.googleapis.com/css2?family=Montserrat:wght@100;600&display=swap'
+            rel='stylesheet'
+          />
         </Head>
         <body {...this.helmetBodyAttrComponents}>
           <Main />

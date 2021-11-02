@@ -1,14 +1,28 @@
+/* eslint no-tabs: ["error", { allowIndentationTabs: true }] */
+
 import { ThemeProvider, createGlobalStyle } from 'styled-components'
 import { Helmet } from 'react-helmet'
 import { Provider } from 'react-redux'
-import styledNormalize from 'styled-normalize'
 
 import { useStore } from 'store'
 import Layout from 'components/Layout'
 import theme from 'theme'
 
 const GlobalStyle = createGlobalStyle`
-  ${styledNormalize}
+* { 
+  box-sizing: border-box; 
+}
+html, body {
+	min-height: 100%;
+	background: ${theme.background};
+	color: ${theme.text.primary};
+  font-family: "Montserrat";
+  margin: 0;
+  padding: 0;
+}
+a, a:visited, a:hover, a:active {
+  color: inherit;
+}
 `
 
 export default function MyApp (props) {

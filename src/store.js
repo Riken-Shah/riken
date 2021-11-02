@@ -2,7 +2,6 @@ import { configureStore } from '@reduxjs/toolkit'
 import { useDispatch, useSelector } from 'react-redux'
 import { createLogger } from 'redux-logger'
 import config from 'config'
-import { repoSearchReducer } from 'features/repoSearch/repoSearchSlice'
 
 export const createStore = (preloadedState) => {
   const middlewares = []
@@ -17,11 +16,10 @@ export const createStore = (preloadedState) => {
   }
 
   return configureStore({
-    reducer: {
-      repoSearch: repoSearchReducer
-    },
+    reducer: {},
     preloadedState,
-    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(...middlewares),
+    middleware: (getDefaultMiddleware) =>
+      getDefaultMiddleware().concat(...middlewares),
     devTools: config.env === 'development'
   })
 }
