@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-// import Link from "next/link";
 import styled from 'styled-components'
 import theme from 'theme'
 import { device } from '../utils'
@@ -10,7 +9,7 @@ const NavbarWraper = styled.div`
   margin: 7px 30px;
   display: flex;
 
-  @media ${device.tabletS} {
+  @media only screen and ${device.tabletS} {
     justify-content: space-between;
     margin: 7px 20px;
   }
@@ -21,7 +20,7 @@ const NavbarItemsWrapper = styled.div`
   justify-content: space-evenly;
   list-style-type: none;
   width: 100%;
-  @media ${device.tabletS} {
+  @media only screen and ${device.tabletS} {
     display: none;
   }
 `
@@ -38,18 +37,18 @@ const Link = styled.a`
   border-radius: 20px;
   padding: 10px 25px;
 
-  @media ${device.tabletS} {
+  @media only screen and ${device.tabletS} {
     font-size: 13px;
     padding: 10px 20px;
   }
 `
 
 const MenuButton = styled(Link)`
-  @media ${device.desktopL} {
+  @media only screen and ${device.desktopL} {
     display: none;
   }
 
-  @media ${device.tabletS} {
+  @media only screen and ${device.tabletS} {
     display: inline;
   }
 `

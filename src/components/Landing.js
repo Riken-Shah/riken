@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { device } from '../utils'
 
 const LandingWrapper = styled.div`
-  height: 90vh;
+  height: calc(100vh - 70px);
   position: relative;
 `
 
@@ -23,7 +23,7 @@ const IntroSpan = styled.span`
   font-weight: 300;
   margin-bottom: 12px;
 
-  @media ${device.mobileL} {
+  @media only screen and ${device.mobileL} {
     font-size: 16px;
   }
 `
@@ -33,11 +33,11 @@ const HeadingText = styled.span`
   margin-bottom: 12px;
   font-family: "Druk Wide Bold";
 
-  @media ${device.tablet} {
+  @media only screen and ${device.tablet} {
     font-size: 28px;
   }
 
-  @media ${device.mobileL} {
+  @media only screen and ${device.mobileL} {
     font-size: 21px;
   }
 `
@@ -51,7 +51,7 @@ const ButtonWrapper = styled.div`
   filter: alpha(opacity=50);
   margin-top: 20px;
 
-  @media ${device.mobileL} {
+  @media only screen and ${device.mobileL} {
     width: 150px;
   }
 `
@@ -63,7 +63,7 @@ const Button = styled.div`
   font-weight: 600;
   font-size: 14px;
 
-  @media ${device.mobileL} {
+  @media only screen and ${device.mobileL} {
     font-size: 12px;
   }
 `

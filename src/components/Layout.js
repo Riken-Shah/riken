@@ -7,7 +7,7 @@ import { calculateScrollPercenatage, device } from '../utils'
 const LayoutComponent = styled.div`
   margin: 0 30px;
 
-  @media ${device.mobileL} {
+  @media only screen and ${device.mobileL} {
     margin: 0 5px;
   }
 `
