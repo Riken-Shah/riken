@@ -1,32 +1,52 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useContext } from 'react'
 import styled from 'styled-components'
 import { NavbarComponent } from './Navbar'
 import { ProgressBarComponent } from './ProgressBar'
-import { calculateScrollPercenatage, device } from '../utils'
+import { Scrollbar } from 'smooth-scrollbar-react'
+import { Context } from '../store'
+import { UPDATE_SCROLLING_DATA } from '../Reducer'
 
 const LayoutComponent = styled.div`
-  margin: 0 30px;
-
-  @media only screen and ${device.mobileL} {
-    margin: 0 5px;
-  }
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  max-height: 1000vh;
+  // background: green;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  margin-top: 70px;
 `
 
+const Main = styled.div``
+
 const Layout = (props) => {
-  const ref = useRef(null)
-  const [percentage, setPercentage] = useState(0)
+  const [, dispatch] = useContext(Context)
 
-  useEffect(() => {
-    if (ref.current) {
-      setPercentage(calculateScrollPercenatage(ref.current))
-    }
-  })
+  function updateScrollingData (_, scrollBar) {
+    const x = scrollBar.scrollTop
+    const y = scrollBar.scrollLeft
 
+    dispatch({
+      type: UPDATE_SCROLLING_DATA,
+      x,
+      y
+    })
+  }
   return (
     <>
       <NavbarComponent />
-      <ProgressBarComponent width={percentage} />
-      <LayoutComponent ref={ref}>{props.children}</LayoutComponent>
+      <ProgressBarComponent />
+      <LayoutComponent id='main'>
+        <Scrollbar
+          plugins={{ overscroll: { effect: 'bounce' } }}
+          onScroll={updateScrollingData}
+        >
+          <Main>{props.children}</Main>
+        </Scrollbar>
+      </LayoutComponent>
     </>
   )
 }
