@@ -1,8 +1,8 @@
 import React from 'react'
 import styled from 'styled-components'
-import { device } from '../utils'
+import { defaultSectionStyling, device } from '../utils'
 
-const LandingWrapper = styled.div`
+const LandingWrapper = styled(defaultSectionStyling)`
   height: calc(100vh - 70px);
   position: relative;
 `

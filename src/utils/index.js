@@ -1,8 +1,4 @@
-export const calculateScrollPercenatage = (elm) => {
-  const parent = elm.parentNode
-  const scrollTop = parent.scrollTop || elm.scrollTop
-  return (scrollTop / (parent.scrollHeight - parent.clientHeight)) * 100
-}
+import styled from 'styled-components'
 
 const screenSize = {
   mobileS: '320px',
@@ -26,3 +22,11 @@ export const device = {
   desktop: `(max-width: ${screenSize.desktop})`,
   desktopL: `(max-width: ${screenSize.desktop})`
 }
+
+export const defaultSectionStyling = styled.div`
+  margin: 0 30px;
+
+  @media only screen and ${device.mobileL} {
+    margin: 0 5px;
+  }
+`
