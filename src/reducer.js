@@ -1,26 +1,24 @@
-export const UPDATE_SCROLLING_DATA = 'UPDATE_SCROLLING_DATA'
+export const UPDATE_SCROLLING_DATA = "UPDATE_SCROLLING_DATA";
 
 const Reducer = (state, action) => {
   switch (action.type) {
-    case UPDATE_SCROLLING_DATA:
-      console.log('as', state.scrollingPosition.x)
-      const x = action.x
-      const y = action.y
-      const oldX = state.scrollingPosition.x
-      const oldY = state.scrollingPosition.y
-      console.log(`sOld x: ${oldX} New X ${x}`)
-      let horizontalScrollDirection = ''
-      let verticleScrollDirection = ''
+    case UPDATE_SCROLLING_DATA: {
+      const { x, y } = action;
+      const oldX = state.scrollingPosition.x;
+      const oldY = state.scrollingPosition.y;
+      let horizontalScrollDirection = "";
+      let verticleScrollDirection = "";
+
       if (oldX < x) {
-        horizontalScrollDirection = 'down'
+        horizontalScrollDirection = "down";
       } else {
-        horizontalScrollDirection = 'up'
+        horizontalScrollDirection = "up";
       }
 
       if (oldY < y) {
-        verticleScrollDirection = 'right'
+        verticleScrollDirection = "right";
       } else {
-        verticleScrollDirection = 'left'
+        verticleScrollDirection = "left";
       }
 
       return {
@@ -29,12 +27,13 @@ const Reducer = (state, action) => {
           x,
           y,
           horizontalScrollDirection,
-          verticleScrollDirection
-        }
-      }
+          verticleScrollDirection,
+        },
+      };
+    }
     default:
-      return state
+      return state;
   }
-}
+};
 
-export default Reducer
+export default Reducer;
