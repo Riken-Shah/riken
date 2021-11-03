@@ -2,11 +2,10 @@
 
 import { ThemeProvider, createGlobalStyle } from 'styled-components'
 import { Helmet } from 'react-helmet'
-import { Provider } from 'react-redux'
 
-import { useStore } from 'store'
 import Layout from 'components/Layout'
 import theme from 'theme'
+import Store from '../src/store'
 
 const GlobalStyle = createGlobalStyle`
 * { 
@@ -19,6 +18,10 @@ html, body {
   font-family: "Montserrat";
   margin: 0;
   padding: 0;
+
+  .scrollbar-track{
+    display: none !important;
+  }
 }
 a, a:visited, a:hover, a:active {
   color: inherit;
@@ -27,8 +30,7 @@ a, a:visited, a:hover, a:active {
 
 export default function MyApp (props) {
   const { Component, pageProps } = props
-  const store = useStore(pageProps.state)
-  const title = 'Hello next.js Real World!'
+  const title = 'Riken Portfolio'
   return (
     <>
       <Helmet>
@@ -38,11 +40,11 @@ export default function MyApp (props) {
       </Helmet>
       <ThemeProvider theme={theme}>
         <GlobalStyle />
-        <Provider store={store}>
+        <Store>
           <Layout>
             <Component {...pageProps} />
           </Layout>
-        </Provider>
+        </Store>
       </ThemeProvider>
     </>
   )

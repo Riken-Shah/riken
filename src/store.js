@@ -1,51 +1,21 @@
-import { configureStore } from '@reduxjs/toolkit'
-import { useDispatch, useSelector } from 'react-redux'
-import { createLogger } from 'redux-logger'
-import config from 'config'
+import React, { createContext, useReducer } from 'react'
+import Reducer from './Reducer'
 
-export const createStore = (preloadedState) => {
-  const middlewares = []
-
-  if (config.env === 'development' && typeof window !== 'undefined') {
-    const logger = createLogger({
-      level: 'info',
-      collapsed: true
-    })
-
-    middlewares.push(logger)
+const initialState = {
+  scrollingPosition: {
+    x: 0,
+    y: 0,
+    horizontalScrollDirection: 'down',
+    verticleScrollDirection: 'right'
   }
-
-  return configureStore({
-    reducer: {},
-    preloadedState,
-    middleware: (getDefaultMiddleware) =>
-      getDefaultMiddleware().concat(...middlewares),
-    devTools: config.env === 'development'
-  })
 }
 
-let store
-const initializeStore = (preloadedState) => {
-  let _store = store || createStore(preloadedState)
-
-  if (preloadedState && store) {
-    _store = createStore({ ...store.getState(), ...preloadedState })
-    store = undefined
-  }
-
-  if (typeof window === 'undefined') {
-    return _store
-  }
-
-  if (!store) {
-    store = _store
-  }
-
-  return store
+const Store = ({ children }) => {
+  const [state, dispatch] = useReducer(Reducer, initialState)
+  return (
+    <Context.Provider value={[state, dispatch]}>{children}</Context.Provider>
+  )
 }
 
-export const useStore = (preloadedState) => initializeStore(preloadedState)
-
-export const useAppDispatch = () => useDispatch()
-
-export const useAppSelector = useSelector
+export const Context = createContext(initialState)
+export default Store
