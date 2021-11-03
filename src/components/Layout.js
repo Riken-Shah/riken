@@ -1,10 +1,10 @@
-import React, { useContext } from 'react'
-import styled from 'styled-components'
-import { NavbarComponent } from './Navbar'
-import { ProgressBarComponent } from './ProgressBar'
-import { Scrollbar } from 'smooth-scrollbar-react'
-import { Context } from '../store'
-import { UPDATE_SCROLLING_DATA } from '../Reducer'
+import React, { useContext } from "react";
+import styled from "styled-components";
+import { Scrollbar } from "smooth-scrollbar-react";
+import NavbarComponent from "./Navbar";
+import ProgressBarComponent from "./ProgressBar";
+import { Context } from "../store";
+import { UPDATE_SCROLLING_DATA } from "../reducer";
 
 const LayoutComponent = styled.div`
   display: flex;
@@ -18,37 +18,37 @@ const LayoutComponent = styled.div`
   bottom: 0;
   left: 0;
   margin-top: 70px;
-`
+`;
 
-const Main = styled.div``
+const Main = styled.div``;
 
-const Layout = (props) => {
-  const [, dispatch] = useContext(Context)
+const Layout = ({ children }) => {
+  const [, dispatch] = useContext(Context);
 
-  function updateScrollingData (_, scrollBar) {
-    const x = scrollBar.scrollTop
-    const y = scrollBar.scrollLeft
+  function updateScrollingData(_, scrollBar) {
+    const x = scrollBar.scrollTop;
+    const y = scrollBar.scrollLeft;
 
     dispatch({
       type: UPDATE_SCROLLING_DATA,
       x,
-      y
-    })
+      y,
+    });
   }
   return (
     <>
       <NavbarComponent />
       <ProgressBarComponent />
-      <LayoutComponent id='main'>
+      <LayoutComponent id="main">
         <Scrollbar
-          plugins={{ overscroll: { effect: 'bounce' } }}
+          plugins={{ overscroll: { effect: "bounce" } }}
           onScroll={updateScrollingData}
         >
-          <Main>{props.children}</Main>
+          <Main>{children}</Main>
         </Scrollbar>
       </LayoutComponent>
     </>
-  )
-}
+  );
+};
 
-export default Layout
+export default Layout;

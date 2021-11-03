@@ -1,11 +1,11 @@
 /* eslint no-tabs: ["error", { allowIndentationTabs: true }] */
 
-import { ThemeProvider, createGlobalStyle } from 'styled-components'
-import { Helmet } from 'react-helmet'
+import { ThemeProvider, createGlobalStyle } from "styled-components";
+import { Helmet } from "react-helmet";
 
-import Layout from 'components/Layout'
-import theme from 'theme'
-import Store from '../src/store'
+import Layout from "../src/components/Layout";
+import theme from "../src/theme";
+import Store from "../src/store";
 
 const GlobalStyle = createGlobalStyle`
 * { 
@@ -26,17 +26,17 @@ html, body {
 a, a:visited, a:hover, a:active {
   color: inherit;
 }
-`
+`;
 
-export default function MyApp (props) {
-  const { Component, pageProps } = props
-  const title = 'Riken Portfolio'
+export default function MyApp(props) {
+  const { Component, pageProps } = props;
+  const title = "Riken Portfolio";
   return (
     <>
       <Helmet>
         <title>{title}</title>
-        <meta name='viewport' content='width=device-width, initial-scale=1' />
-        <meta property='og:title' content={title} />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta property="og:title" content={title} />
       </Helmet>
       <ThemeProvider theme={theme}>
         <GlobalStyle />
@@ -47,5 +47,5 @@ export default function MyApp (props) {
         </Store>
       </ThemeProvider>
     </>
-  )
+  );
 }

@@ -1,7 +1,7 @@
-import React, { useState } from 'react'
-import styled from 'styled-components'
-import theme from 'theme'
-import { device } from '../utils'
+import React, { useState } from "react";
+import styled from "styled-components";
+import theme from "../theme";
+import { device } from "../utils";
 
 const NavbarWraper = styled.div`
   height: 50px;
@@ -13,7 +13,7 @@ const NavbarWraper = styled.div`
     justify-content: space-between;
     margin: 7px 20px;
   }
-`
+`;
 
 const NavbarItemsWrapper = styled.div`
   display: flex;
@@ -23,17 +23,17 @@ const NavbarItemsWrapper = styled.div`
   @media only screen and ${device.tabletS} {
     display: none;
   }
-`
+`;
 
 const NavLink = styled.li`
   font-size: 15px;
-`
+`;
 
 const Link = styled.a`
   text-decoration: none;
   font-weight: 400;
   border: solid ${theme.primary};
-  border-width: ${(props) => (props.isActive ? '0.5px' : '0px')};
+  border-width: ${(props) => (props.isActive ? "0.5px" : "0px")};
   border-radius: 20px;
   padding: 10px 25px;
 
@@ -41,7 +41,7 @@ const Link = styled.a`
     font-size: 13px;
     padding: 10px 20px;
   }
-`
+`;
 
 const MenuButton = styled(Link)`
   @media only screen and ${device.desktopL} {
@@ -51,11 +51,11 @@ const MenuButton = styled(Link)`
   @media only screen and ${device.tabletS} {
     display: inline;
   }
-`
+`;
 
 const LogoIcon = styled.a`
   font-family: "Druk Wide Bold";
-`
+`;
 
 const ThemeToggleWrapper = styled.div`
   width: 40px;
@@ -66,43 +66,43 @@ const ThemeToggleWrapper = styled.div`
   border: solid 0.5px #676767;
   border-radius: 50%;
   cursor: pointer;
-`
+`;
 
 const ThemeToggler = styled.div`
   font-size: 25px;
   text-align: center;
-`
+`;
 
 const SunGlasses = styled.img`
   position: absolute;
-  top: ${(props) => (props.isActive ? '-80' : '10')}px;
+  top: ${(props) => (props.isActive ? "-80" : "10")}px;
   width: 21px;
   right: 7px;
   transition: top 0.5s ease-in;
-`
+`;
 
 const navItems = [
-  { title: 'Home', href: '#' },
-  { title: 'About', href: '#' },
-  { title: 'Resume', href: '#' },
-  { title: 'Contact', href: '#' }
-]
+  { title: "Home", href: "#" },
+  { title: "About", href: "#" },
+  { title: "Resume", href: "#" },
+  { title: "Contact", href: "#" },
+];
 
-export const NavbarComponent = () => {
-  const [activeIndex, setActiveIndex] = useState(null)
+const NavbarComponent = () => {
+  const [activeIndex, setActiveIndex] = useState(null);
 
-  const [isLightMode, setsLightMode] = useState(false)
+  const [isLightMode, setsLightMode] = useState(false);
 
   const handleClick = (idx) => {
-    setActiveIndex(idx)
-  }
+    setActiveIndex(idx);
+  };
   return (
     <>
       <NavbarWraper>
         <LogoIcon> &#60;/R&#62; </LogoIcon>
         <NavbarItemsWrapper>
           {navItems.map((item, idx) => (
-            <NavLink key={idx}>
+            <NavLink key={item.title}>
               <Link
                 href={item.href}
                 isActive={activeIndex === idx}
@@ -114,17 +114,23 @@ export const NavbarComponent = () => {
           ))}
         </NavbarItemsWrapper>
         <ThemeToggleWrapper onClick={() => setsLightMode(!isLightMode)}>
-          <ThemeToggler>🙂</ThemeToggler>
-          <SunGlasses src='static/sunglasses.png' isActive={isLightMode} />
+          <ThemeToggler>
+            <span role="img" aria-label="smile">
+              🙂
+            </span>
+          </ThemeToggler>
+          <SunGlasses src="static/sunglasses.png" isActive={isLightMode} />
         </ThemeToggleWrapper>
 
         {/* For Mobile or Smaller Devices */}
-        <NavLink as='div'>
-          <MenuButton href='#' isActive>
+        <NavLink as="div">
+          <MenuButton href="#" isActive>
             Menu
           </MenuButton>
         </NavLink>
       </NavbarWraper>
     </>
-  )
-}
+  );
+};
+
+export default NavbarComponent;

@@ -1,11 +1,11 @@
-import React from 'react'
-import styled from 'styled-components'
-import { defaultSectionStyling, device } from '../utils'
+import React from "react";
+import styled from "styled-components";
+import { defaultSectionStyling, device } from "../utils";
 
 const LandingWrapper = styled(defaultSectionStyling)`
   height: calc(100vh - 70px);
   position: relative;
-`
+`;
 
 const Section = styled.div`
   text-align: center;
@@ -16,7 +16,7 @@ const Section = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-`
+`;
 
 const IntroSpan = styled.span`
   font-size: 18px;
@@ -26,7 +26,7 @@ const IntroSpan = styled.span`
   @media only screen and ${device.mobileL} {
     font-size: 16px;
   }
-`
+`;
 
 const HeadingText = styled.span`
   font-size: 40px;
@@ -40,7 +40,7 @@ const HeadingText = styled.span`
   @media only screen and ${device.mobileL} {
     font-size: 21px;
   }
-`
+`;
 
 const ButtonWrapper = styled.div`
   width: 180px;
@@ -54,7 +54,7 @@ const ButtonWrapper = styled.div`
   @media only screen and ${device.mobileL} {
     width: 150px;
   }
-`
+`;
 
 const Button = styled.div`
   background: url(static/gradient.png) no-repeat 40% 25%;
@@ -66,7 +66,7 @@ const Button = styled.div`
   @media only screen and ${device.mobileL} {
     font-size: 12px;
   }
-`
+`;
 
 const FloatingElements = styled.div`
   background: url(${(props) => props.url});
@@ -80,33 +80,43 @@ const FloatingElements = styled.div`
   bottom: ${(props) => props.bottom};
   right: ${(props) => props.right};
   position: absolute;
-`
+`;
 
-export const LandingComponent = () => {
-  return (
-    <LandingWrapper>
-      <Section>
-        <IntroSpan>Namaste, I am Riken Shah 🙏 </IntroSpan>
-        <HeadingText>Contemplative coder;</HeadingText>
-        <HeadingText>Who Loves to Solve Interesting Ideas</HeadingText>
-        <ButtonWrapper>
-          <Button>Say Hi 👋</Button>
-        </ButtonWrapper>
-      </Section>
-      <FloatingElements
-        url={'static/3d-brackets.png'}
-        width={120}
-        height={100}
-        bottom={'10%'}
-        left={'15%'}
-      />
-      <FloatingElements
-        url={'static/3d-semicolon.png'}
-        width={120}
-        height={100}
-        top={'10%'}
-        right={'15%'}
-      />
-    </LandingWrapper>
-  )
-}
+const LandingComponent = () => (
+  <LandingWrapper>
+    <Section>
+      <IntroSpan>
+        Namaste, I am Riken Shah{" "}
+        <span role="img" aria-label="hi">
+          🙏
+        </span>
+      </IntroSpan>
+      <HeadingText>Contemplative coder;</HeadingText>
+      <HeadingText>Who Loves to Solve Interesting Ideas</HeadingText>
+      <ButtonWrapper>
+        <Button>
+          Say Hi{" "}
+          <span role="img" aria-label="hi">
+            👋
+          </span>
+        </Button>
+      </ButtonWrapper>
+    </Section>
+    <FloatingElements
+      url="static/3d-brackets.png"
+      width={120}
+      height={100}
+      bottom="10%"
+      left="15%"
+    />
+    <FloatingElements
+      url="static/3d-semicolon.png"
+      width={120}
+      height={100}
+      top="10%"
+      right="15%"
+    />
+  </LandingWrapper>
+);
+
+export default LandingComponent;
