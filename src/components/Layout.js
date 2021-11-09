@@ -1,10 +1,10 @@
-import React, { useContext } from "react";
+import React, { useContext, useRef, useEffect } from "react";
 import styled from "styled-components";
-import { Scrollbar } from "smooth-scrollbar-react";
+import scrollbar from "../utils/scrollbar";
 import NavbarComponent from "./Navbar";
 import ProgressBarComponent from "./ProgressBar";
 import { Context } from "../store";
-import { UPDATE_SCROLLING_DATA } from "../reducer";
+import { SET_MAIN_SCROLLBAR_INSTANCE, UPDATE_SCROLLING_DATA } from "../reducer";
 
 const LayoutComponent = styled.div`
   display: flex;
@@ -24,10 +24,10 @@ const Main = styled.div``;
 
 const Layout = ({ children }) => {
   const [, dispatch] = useContext(Context);
+  const ref = useRef(null);
 
-  function updateScrollingData(_, scrollBar) {
-    const x = scrollBar.scrollTop;
-    const y = scrollBar.scrollLeft;
+  function updateScrollingData(scrollBar) {
+    const { x, y } = scrollBar.offset;
 
     dispatch({
       type: UPDATE_SCROLLING_DATA,
@@ -35,17 +35,31 @@ const Layout = ({ children }) => {
       y,
     });
   }
+
+  useEffect(() => {
+    if (ref.current) {
+      const mainScrollBar = scrollbar.init(ref.current, {
+        onScroll: updateScrollingData,
+        damping: 0.025,
+        // damping: 0.1,
+      });
+      mainScrollBar.addListener(updateScrollingData);
+      dispatch({ type: SET_MAIN_SCROLLBAR_INSTANCE, mainScrollBar });
+    }
+    return () => {
+      if (scrollbar) {
+        scrollbar.destoryAll();
+      }
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <>
       <NavbarComponent />
       <ProgressBarComponent />
       <LayoutComponent id="main">
-        <Scrollbar
-          plugins={{ overscroll: { effect: "bounce" } }}
-          onScroll={updateScrollingData}
-        >
-          <Main>{children}</Main>
-        </Scrollbar>
+        <Main ref={ref}>{children}</Main>
       </LayoutComponent>
     </>
   );
