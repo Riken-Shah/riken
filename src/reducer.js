@@ -1,4 +1,5 @@
 export const UPDATE_SCROLLING_DATA = "UPDATE_SCROLLING_DATA";
+export const SET_MAIN_SCROLLBAR_INSTANCE = "SET_MAIN_SCROLLBAR_INSTANCE";
 
 const Reducer = (state, action) => {
   switch (action.type) {
@@ -8,17 +9,16 @@ const Reducer = (state, action) => {
       const oldY = state.scrollingPosition.y;
       let horizontalScrollDirection = "";
       let verticleScrollDirection = "";
-
-      if (oldX < x) {
-        horizontalScrollDirection = "down";
+      if (oldY < y) {
+        verticleScrollDirection = "down";
       } else {
-        horizontalScrollDirection = "up";
+        verticleScrollDirection = "up";
       }
 
-      if (oldY < y) {
-        verticleScrollDirection = "right";
+      if (oldX < x) {
+        horizontalScrollDirection = "right";
       } else {
-        verticleScrollDirection = "left";
+        horizontalScrollDirection = "left";
       }
 
       return {
@@ -31,6 +31,8 @@ const Reducer = (state, action) => {
         },
       };
     }
+    case SET_MAIN_SCROLLBAR_INSTANCE:
+      return { ...state, mainScrollBar: action.mainScrollBar };
     default:
       return state;
   }

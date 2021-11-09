@@ -2,6 +2,7 @@ import React, { createContext, useReducer } from "react";
 import Reducer from "./reducer";
 
 const initialState = {
+  mainScrollBar: null,
   scrollingPosition: {
     x: 0,
     y: 0,
