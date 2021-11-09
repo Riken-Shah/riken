@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { defaultSectionStyling, device } from "../utils";
+import Button from "./Button";
 
 const LandingWrapper = styled(defaultSectionStyling)`
   height: calc(100vh - 70px);
@@ -37,34 +38,8 @@ const HeadingText = styled.span`
     font-size: 28px;
   }
 
-  @media only screen and ${device.mobileL} {
-    font-size: 21px;
-  }
-`;
-
-const ButtonWrapper = styled.div`
-  width: 180px;
-  background: url(static/gradient-bg.png);
-  border-radius: 12px;
-  padding: 6px;
-  align-self: center;
-  filter: alpha(opacity=50);
-  margin-top: 20px;
-
-  @media only screen and ${device.mobileL} {
-    width: 150px;
-  }
-`;
-
-const Button = styled.div`
-  background: url(static/gradient.png) no-repeat 40% 25%;
-  border-radius: 12px;
-  padding: 10px;
-  font-weight: 600;
-  font-size: 14px;
-
-  @media only screen and ${device.mobileL} {
-    font-size: 12px;
+  @media only screen and ${device.tabletS} {
+    font-size: 6vw;
   }
 `;
 
@@ -75,48 +50,102 @@ const FloatingElements = styled.div`
   background-position: center center;
   width: ${(props) => props.width}px;
   height: ${(props) => props.height}px;
-  top: ${(props) => props.top};
+  top: ${(props) => props.top}%;
   left: ${(props) => props.left};
-  bottom: ${(props) => props.bottom};
+  bottom: ${(props) => props.bottom}%;
   right: ${(props) => props.right};
   position: absolute;
+  animation: float 2s infinite ease-in-out;
+  @keyframes float {
+    0% {
+      transform: translateY(${(props) => props.top || props.bottom}%);
+    }
+    50% {
+      transform: translateY(
+        calc(${(props) => props.top || props.bottom}% - 10px)
+      );
+    }
+    100% {
+      transform: translateY(${(props) => props.top || props.bottom}%);
+    }
+  }
+
+  @media only screen and ${device.mobileL},
+    ${device.tablet} and ${device.landscape} {
+    width: 70px;
+    height: 70px;
+  }
 `;
 
-const LandingComponent = () => (
-  <LandingWrapper>
-    <Section>
-      <IntroSpan>
-        Namaste, I am Riken Shah{" "}
-        <span role="img" aria-label="hi">
-          🙏
-        </span>
-      </IntroSpan>
-      <HeadingText>Contemplative coder;</HeadingText>
-      <HeadingText>Who Loves to Solve Interesting Ideas</HeadingText>
-      <ButtonWrapper>
+const LandingComponent = () => {
+  const [moveX, setMoveX] = useState(0);
+  const [moveY, setMoveY] = useState(0);
+  const ref = useRef(null);
+
+  const handleMouseMove = (e) => {
+    const { clientX, clientY } = e;
+    const { clientWidth, clientHeight } = ref.current;
+
+    const Xpercenatage = (clientX * 100) / clientWidth - 50;
+    const Ypercenatage = (clientY * 100) / clientHeight - 50;
+    setMoveX(Xpercenatage * 0.6);
+    setMoveY(Ypercenatage * 0.8);
+  };
+
+  // eslint-disable-next-line consistent-return
+  useEffect(() => {
+    if (ref.current) {
+      const elem = ref.current;
+      elem.addEventListener("mousemove", handleMouseMove);
+      return () => elem.removeEventListener("mousemove", handleMouseMove);
+    }
+  }, []);
+
+  return (
+    <LandingWrapper ref={ref}>
+      <Section>
+        <IntroSpan>
+          Namaste, I am Riken Shah{" "}
+          <span role="img" aria-label="hi">
+            🙏
+          </span>
+        </IntroSpan>
+        <HeadingText>Contemplative coder;</HeadingText>
+        <HeadingText>Who Loves to Solve Interesting Ideas</HeadingText>
         <Button>
           Say Hi{" "}
           <span role="img" aria-label="hi">
             👋
           </span>
         </Button>
-      </ButtonWrapper>
-    </Section>
-    <FloatingElements
-      url="static/3d-brackets.png"
-      width={120}
-      height={100}
-      bottom="10%"
-      left="15%"
-    />
-    <FloatingElements
-      url="static/3d-semicolon.png"
-      width={120}
-      height={100}
-      top="10%"
-      right="15%"
-    />
-  </LandingWrapper>
-);
+      </Section>
+      <FloatingElements
+        url="static/3d-brackets.png"
+        width={120}
+        height={100}
+        left="15%"
+        bottom="15"
+        style={
+          {
+            // bottom: `calc(15% - ${scrollingPosition.y * 0.1}px)`,
+            // transform: `rotateX(${moveX}deg) rotateY(${moveY}deg)`,
+          }
+        }
+      />
+      <FloatingElements
+        url="static/3d-semicolon.png"
+        width={120}
+        height={100}
+        top="10"
+        // top={`calc(10% + ${scrollingPosition.y * 0.3}px)`}
+        style={{
+          // top: `calc(10% + ${scrollingPosition.y * 0.2}px)`,
+          transform: `rotateX(${moveX}deg) rotateY(${moveY}deg)`,
+        }}
+        right="15%"
+      />
+    </LandingWrapper>
+  );
+};
 
 export default LandingComponent;
