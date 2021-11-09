@@ -35,7 +35,7 @@ function SlidingHeading({ word }) {
       <div
         style={{
           transform: `translateX(calc(-50% - ${
-            state.scrollingPosition.x * 0.5
+            state.scrollingPosition.y * 0.5
           }px))`,
         }}
       >
