@@ -46,11 +46,6 @@ const Layout = ({ children }) => {
       mainScrollBar.addListener(updateScrollingData);
       dispatch({ type: SET_MAIN_SCROLLBAR_INSTANCE, mainScrollBar });
     }
-    return () => {
-      if (scrollbar) {
-        scrollbar.destoryAll();
-      }
-    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
