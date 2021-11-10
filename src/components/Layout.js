@@ -4,7 +4,11 @@ import scrollbar from "../utils/scrollbar";
 import NavbarComponent from "./Navbar";
 import ProgressBarComponent from "./ProgressBar";
 import { Context } from "../store";
-import { SET_MAIN_SCROLLBAR_INSTANCE, UPDATE_SCROLLING_DATA } from "../reducer";
+import {
+  SET_MAIN_SCROLLBAR_INSTANCE,
+  UPDATE_SCROLLING_DATA,
+  WINDOW_RESIZE,
+} from "../reducer";
 
 const LayoutComponent = styled.div`
   display: flex;
@@ -36,6 +40,15 @@ const Layout = ({ children }) => {
     });
   }
 
+  function handleResize() {
+    // Set window width/height to state
+    dispatch({
+      type: WINDOW_RESIZE,
+      width: window.innerWidth,
+      height: window.innerHeight,
+    });
+  }
+
   useEffect(() => {
     if (ref.current) {
       const mainScrollBar = scrollbar.init(ref.current, {
@@ -46,6 +59,19 @@ const Layout = ({ children }) => {
       mainScrollBar.addListener(updateScrollingData);
       dispatch({ type: SET_MAIN_SCROLLBAR_INSTANCE, mainScrollBar });
     }
+
+    // Window Resize
+    if (typeof window !== "undefined") {
+      // Add event listener
+      window.addEventListener("resize", handleResize);
+
+      // Call handler right away so state gets updated with initial window size
+      handleResize();
+
+      // Remove event listener on cleanup
+      return () => window.removeEventListener("resize", handleResize);
+    }
+    return () => {};
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
