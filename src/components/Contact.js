@@ -178,6 +178,7 @@ function Contact() {
               style={{ color: state.submitting && "red" }}
               type="submit"
               as="button"
+              disabled
             >
               {" "}
               Connect Now{" "}
