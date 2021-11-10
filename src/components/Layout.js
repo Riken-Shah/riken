@@ -2,6 +2,7 @@ import React, { useContext, useRef, useEffect } from "react";
 import styled from "styled-components";
 import scrollbar from "../utils/scrollbar";
 import NavbarComponent from "./Navbar";
+import Footer from "./Footer";
 import ProgressBarComponent from "./ProgressBar";
 import { Context } from "../store";
 import {
@@ -80,7 +81,11 @@ const Layout = ({ children }) => {
       <NavbarComponent />
       <ProgressBarComponent />
       <LayoutComponent id="main">
-        <Main ref={ref}>{children}</Main>
+        <Main ref={ref}>
+          {children}
+          <ProgressBarComponent />
+          <Footer />
+        </Main>
       </LayoutComponent>
     </>
   );
