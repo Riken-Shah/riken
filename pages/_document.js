@@ -51,12 +51,12 @@ export default class extends Document {
           {this.helmetJsx}
           {this.helmetHeadComponents}
           <link
-            href="//db.onlinewebfonts.com/c/2206d6cc490084998d531e8c1b2cbb4a?family=Druk+Wide+Bold"
+            href="https://db.onlinewebfonts.com/c/2206d6cc490084998d531e8c1b2cbb4a?family=Druk+Wide+Bold"
             rel="stylesheet"
             type="text/css"
           />
           <link
-            href="//db.onlinewebfonts.com/c/40794b621791bf498f2f06237862031f?family=GT+America+Extended+Bold"
+            href="https://db.onlinewebfonts.com/c/40794b621791bf498f2f06237862031f?family=GT+America+Extended+Bold"
             rel="stylesheet"
             type="text/css"
           />
