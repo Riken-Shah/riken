@@ -69,7 +69,7 @@ const data = [
 const OuterWrapper = styled.div`
   width: 100vw;
   // Added this exponential space to make the scrolling smother
-  height: ${data.length * 100 + data.length * 100 * 2 ** data.length * 0.5}vh;
+  height: ${data.length * 100 + data.length * 100 * 1 ** data.length * 0.5}vh;
   overflow: hidden;
   position: relative;
 `;
@@ -397,52 +397,25 @@ const Dot = styled.div`
 `;
 
 const ProgressBar = ({ top, left, completed }) => {
-  // const [windowSize, setWindowSize] = useState({
-  //   width: undefined,
-  //   height: undefined,
-  // });
-  const [offset, setOffset] = useState(14);
+  const [state] = useContext(Context);
 
   const getOffset = ({ width, height }) => {
     if (typeof width !== "undefined" && typeof height !== "undefined") {
       const isLandscape = width > height;
       if (width < screenSize.tablet) {
         if (isLandscape) {
-          return 0.3;
+          return 1.9;
         }
-        return 0.2;
+        return 1;
       }
     }
-    return 2.3;
+    return 13.5;
   };
-
-  // Handler to call on window resize
-  function handleResize() {
-    // Set window width/height to state
-    setOffset(
-      getOffset({ width: window.innerWidth, height: window.innerHeight })
-    );
-  }
-
-  // eslint-disable-next-line consistent-return
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      // Add event listener
-      window.addEventListener("resize", handleResize);
-
-      // Call handler right away so state gets updated with initial window size
-      handleResize();
-
-      // Remove event listener on cleanup
-      return () => window.removeEventListener("resize", handleResize);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   return (
     <ProgressBarWrapper
       style={{
-        top: `calc(${top}px + ${offset}%)`,
+        top: `calc(${top}px + ${getOffset(state.windowSize)}%)`,
         left,
       }}
     >
@@ -474,23 +447,33 @@ const Experince = () => {
   useEffect(() => {
     if (mainScrollBar && ref.current && !didScrollEventAdded) {
       mainScrollBar.addListener(() => {
+        const widht = window?.innerWidth;
+        const height = window?.innerHeight;
+        const isLandscape = widht > height;
+        // 100vh
+        const vh = Math.round(isLandscape ? height : height * 0.9);
         if (
           ref.current &&
           mainScrollBar &&
-          mainScrollBar.isVisible(ref.current)
+          mainScrollBar.isVisible(ref.current) &&
+          typeof window !== "undefined"
         ) {
           const targetBounding = ref.current.getBoundingClientRect();
           const targetTop = bounding.top - targetBounding.top;
           const targetBottom = targetBounding.bottom - bounding.bottom;
 
-          if (targetTop > 0 && targetBottom > 0) {
+          if (
+            targetTop > 0 &&
+            targetBottom > 0 &&
+            targetTop < ref.current.clientHeight - vh
+          ) {
             const nextTop = bounding.top - targetBounding.top;
             setTop(nextTop);
           }
-          setScrollEventAdded(true);
-        } else {
+        } else if (offset.y < vh) {
           setTop(0);
         }
+        setScrollEventAdded(true);
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -514,7 +497,7 @@ const Experince = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [scrollingPosition]);
 
-  // Main Login For Moving the Experince Div Horizonatally
+  // Main Logic For Moving the Experince Div Horizonatally
   const calcualteTransform = () => {
     const sectionPercentage =
       ((percentageCompleted % eachSectionPercentage) * 100) /
