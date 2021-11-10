@@ -23,15 +23,19 @@ const Button = styled.div`
   font-weight: 600;
   font-size: 14px;
   text-align: center;
+  width: 100%;
+  border: none;
+  color: inherit;
+  font-family: inherit;
 
   @media only screen and ${device.mobileL} {
     font-size: 12px;
   }
 `;
 
-const ButtonElement = ({ children, style }) => (
+const ButtonElement = ({ children, style, ...extra }) => (
   <ButtonWrapper style={style}>
-    <Button>{children}</Button>
+    <Button {...extra}>{children}</Button>
   </ButtonWrapper>
 );
 
