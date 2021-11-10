@@ -1,5 +1,6 @@
 export const UPDATE_SCROLLING_DATA = "UPDATE_SCROLLING_DATA";
 export const SET_MAIN_SCROLLBAR_INSTANCE = "SET_MAIN_SCROLLBAR_INSTANCE";
+export const WINDOW_RESIZE = "WINDOW_RESIZE";
 
 const Reducer = (state, action) => {
   switch (action.type) {
@@ -33,6 +34,11 @@ const Reducer = (state, action) => {
     }
     case SET_MAIN_SCROLLBAR_INSTANCE:
       return { ...state, mainScrollBar: action.mainScrollBar };
+    case WINDOW_RESIZE:
+      return {
+        ...state,
+        windowSize: { width: action.width, height: action.height },
+      };
     default:
       return state;
   }

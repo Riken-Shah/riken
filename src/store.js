@@ -9,6 +9,7 @@ const initialState = {
     horizontalScrollDirection: "down",
     verticleScrollDirection: "right",
   },
+  windowSize: { height: undefined, width: undefined },
 };
 
 const Store = ({ children }) => {
