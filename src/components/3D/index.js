@@ -1,3 +1,4 @@
+/* eslint-disable */
 // Credits to https://github.com/scriptonofficial/3d-shader-image-transition ❤️ Thanks
 
 import THREE from "./bas";
