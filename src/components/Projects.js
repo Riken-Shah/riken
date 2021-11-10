@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
-import SlidingHeading from "./SlidingHeading";
 import { TweenMax } from "gsap";
+import SlidingHeading from "./SlidingHeading";
 import { Context } from "../store";
 import theme from "../theme";
 import { device } from "../utils";
@@ -23,6 +23,7 @@ const ProjectSectionWrapper = styled.div`
   padding-top: 5vh;
   position: relative;
   overflow: hidden;
+  margin-bottom: 5h;
 `;
 
 const ProjectWrapper = styled.div`
