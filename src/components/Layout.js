@@ -10,6 +10,7 @@ import {
   UPDATE_SCROLLING_DATA,
   WINDOW_RESIZE,
 } from "../reducer";
+import { screenSize } from "../utils";
 
 const LayoutComponent = styled.div`
   display: flex;
@@ -54,8 +55,8 @@ const Layout = ({ children }) => {
     if (ref.current) {
       const mainScrollBar = scrollbar.init(ref.current, {
         onScroll: updateScrollingData,
-        damping: 0.025,
-        // damping: 0.1,
+        // temporary needs to fix later
+        damping: window.innerWidth <= screenSize.tablet ? 0.1 : 0.025,
       });
       mainScrollBar.addListener(updateScrollingData);
       dispatch({ type: SET_MAIN_SCROLLBAR_INSTANCE, mainScrollBar });
