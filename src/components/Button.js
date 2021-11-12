@@ -10,6 +10,7 @@ const ButtonWrapper = styled.div`
   align-self: center;
   filter: alpha(opacity=50);
   margin-top: 20px;
+  position: relative;
 
   @media only screen and ${device.mobileL} {
     width: 150px;
@@ -27,6 +28,7 @@ const Button = styled.div`
   border: none;
   color: inherit;
   font-family: inherit;
+  cursor: pointer;
 
   @media only screen and ${device.mobileL} {
     font-size: 12px;
@@ -35,7 +37,9 @@ const Button = styled.div`
 
 const ButtonElement = ({ children, style, ...extra }) => (
   <ButtonWrapper style={style}>
-    <Button {...extra}>{children}</Button>
+    <Button {...extra} style={extra?.buttonStyle}>
+      {children}
+    </Button>
   </ButtonWrapper>
 );
 
