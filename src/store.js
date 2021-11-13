@@ -3,6 +3,7 @@ import Reducer from "./reducer";
 
 const initialState = {
   mainScrollBar: null,
+  appState: null,
   scrollingPosition: {
     x: 0,
     y: 0,

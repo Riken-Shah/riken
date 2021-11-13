@@ -72,6 +72,10 @@ const OuterWrapper = styled.div`
   height: ${data.length * 100 + data.length * 100 * 1 ** data.length * 0.5}vh;
   overflow: hidden;
   position: relative;
+
+  @media only screen and ${device.tablet} {
+    height: auto;
+  }
 `;
 
 const InnerWrapper = styled.div`
@@ -82,6 +86,12 @@ const InnerWrapper = styled.div`
   left: 0;
   align-items: center;
   jusitfy-content: center;
+
+  @media only screen and ${device.tablet} {
+    position: static;
+    flex-direction: column;
+    transform: translateX(0) !important;
+  }
 `;
 
 const ExperienceContainer = styled.div`
@@ -94,6 +104,8 @@ const ExperienceContainer = styled.div`
 
   @media only screen and ${device.tablet} {
     padding: 0 20px;
+    height: auto;
+    margin: 5vh;
   }
 `;
 
@@ -128,18 +140,24 @@ const TagLine = styled.span`
 const SectionWrapper = styled.div`
   display: flex;
 
+  // @media only screen and ${device.tablet} {
+  //   flex-direction: column;
+  //   margin-top: 15vh;
+  //   height: 80vh;
+  // }
+
   @media only screen and ${device.tablet} {
+    height: auto;
+    margin-top: auto;
     flex-direction: column;
-    margin-top: 15vh;
-    height: 80vh;
   }
 
-  @media only screen and ${device.tablet} and ${device.landscape} {
-    margin-top: 38vh;
-    height: 80vh;
+  // @media only screen and ${device.tablet} and ${device.landscape} {
+  //   margin-top: 38vh;
+  //   height: 80vh;
 
-    flex-direction: row;
-  }
+  //   flex-direction: row;
+  // }
 `;
 
 const Section = styled.div`
@@ -336,6 +354,7 @@ const ProgressBarWrapper = styled.div`
 
   @media only screen and ${device.tablet} {
     padding: 0 20px;
+    display: none;
   }
 `;
 
@@ -440,42 +459,48 @@ const Experince = () => {
   const [state] = useContext(Context);
   const { mainScrollBar, scrollingPosition } = state;
   const [top, setTop] = useState(0);
-  const [didScrollEventAdded, setScrollEventAdded] = useState(false);
   const [percentageCompleted, setPercentageCompleted] = useState(0);
   const { bounding, offset } = mainScrollBar || {};
 
-  useEffect(() => {
-    if (mainScrollBar && ref.current && !didScrollEventAdded) {
-      mainScrollBar.addListener(() => {
-        const widht = window?.innerWidth;
-        const height = window?.innerHeight;
-        const isLandscape = widht > height;
-        // 100vh
-        const vh = Math.round(isLandscape ? height : height * 0.9);
-        if (
-          ref.current &&
-          mainScrollBar &&
-          mainScrollBar.isVisible(ref.current) &&
-          typeof window !== "undefined"
-        ) {
-          const targetBounding = ref.current.getBoundingClientRect();
-          const targetTop = bounding.top - targetBounding.top;
-          const targetBottom = targetBounding.bottom - bounding.bottom;
+  const updateInnerWrapperPosition = () => {
+    const widht = window?.innerWidth;
+    const height = window?.innerHeight;
+    const isLandscape = widht > height;
+    // 100vh
+    const vh = Math.round(isLandscape ? height : height * 0.9);
+    if (
+      ref.current &&
+      mainScrollBar &&
+      mainScrollBar.isVisible(ref.current) &&
+      typeof window !== "undefined"
+    ) {
+      const targetBounding = ref.current.getBoundingClientRect();
+      const targetTop = bounding.top - targetBounding.top;
+      const targetBottom = targetBounding.bottom - bounding.bottom;
 
-          if (
-            targetTop > 0 &&
-            targetBottom > 0 &&
-            targetTop < ref.current.clientHeight - vh
-          ) {
-            const nextTop = bounding.top - targetBounding.top;
-            setTop(nextTop);
-          }
-        } else if (offset.y < vh) {
-          setTop(0);
-        }
-        setScrollEventAdded(true);
-      });
+      if (
+        targetTop > 0 &&
+        targetBottom > 0 &&
+        targetTop < ref.current.clientHeight - vh
+      ) {
+        const nextTop = bounding.top - targetBounding.top;
+        setTop(nextTop);
+      }
+    } else if (offset.y < vh) {
+      setTop(0);
     }
+  };
+
+  useEffect(() => {
+    if (
+      mainScrollBar &&
+      ref.current &&
+      // eslint-disable-next-line no-underscore-dangle
+      !mainScrollBar._listeners.has(updateInnerWrapperPosition)
+    ) {
+      mainScrollBar.addListener(updateInnerWrapperPosition);
+    }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mainScrollBar]);
 

@@ -1,10 +1,11 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useCallback, useContext, useState } from "react";
 import styled from "styled-components";
 import { TweenMax } from "gsap";
 import SlidingHeading from "./SlidingHeading";
 import { Context } from "../store";
 import theme from "../theme";
 import { device } from "../utils";
+import { APP_STATE } from "../reducer";
 
 const data = [
   {
@@ -23,7 +24,8 @@ const ProjectSectionWrapper = styled.div`
   padding-top: 5vh;
   position: relative;
   overflow: hidden;
-  margin-bottom: 5h;
+  margin-bottom: 5vh;
+  width: 100vw;
 `;
 
 const ProjectWrapper = styled.div`
@@ -105,10 +107,6 @@ const Image3DContainer = styled.div`
   right: -30vw;
   transition: top 1s ease-in-out;
   z-index: 1;
-
-  @media only screen and ${device.tablet} {
-    display: none;
-  }
 `;
 
 function Projects() {
@@ -116,21 +114,19 @@ function Projects() {
   const [activeImageIdx, setActiveImageIdx] = useState(0);
   const [top, setTop] = useState(0);
   const [state] = useContext(Context);
-  const ref = useRef(null);
+  const onRefChange = useCallback((node) => {
+    if (node) {
+      // eslint-disable-next-line global-require
+      const ImageSlider = require("./3D/index").default;
+      const t = ImageSlider(node);
+      setTween(t);
+      t?.reverse();
+    } else setTween(null);
+  }, []);
 
   function convertNumber(num) {
     return num < 10 ? `0${num}` : num;
   }
-
-  useEffect(() => {
-    if (ref.current && !tween) {
-      // eslint-disable-next-line global-require
-      const ImageSlider = require("./3D/index").default;
-      const t = ImageSlider(ref.current);
-      setTween(t);
-      t.reverse();
-    }
-  }, [tween]);
 
   return (
     <ProjectSectionWrapper>
@@ -144,7 +140,7 @@ function Projects() {
               setTop(e.target.offsetTop - state.windowSize.height * 0.35);
               if (idx !== activeImageIdx) {
                 if (idx === 0) {
-                  tween.reverse();
+                  tween?.reverse();
                 } else {
                   TweenMax.to(tween, 0, { timeScale: 1 });
                 }
@@ -161,7 +157,9 @@ function Projects() {
           </Project>
         ))}
       </ProjectWrapper>
-      <Image3DContainer className="three" ref={ref} style={{ top }} />
+      {state?.appState === APP_STATE.DESKTOP && (
+        <Image3DContainer className="three" ref={onRefChange} style={{ top }} />
+      )}
     </ProjectSectionWrapper>
   );
 }

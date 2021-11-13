@@ -1,11 +1,18 @@
 export const UPDATE_SCROLLING_DATA = "UPDATE_SCROLLING_DATA";
 export const SET_MAIN_SCROLLBAR_INSTANCE = "SET_MAIN_SCROLLBAR_INSTANCE";
 export const WINDOW_RESIZE = "WINDOW_RESIZE";
+export const SET_APP_STATE = "SET_APP_STATE";
+export const APP_STATE = { DESKTOP: "desktop", MOBILE: "mobile" };
 
 const Reducer = (state, action) => {
   switch (action.type) {
     case UPDATE_SCROLLING_DATA: {
       const { x, y } = action;
+      // Avoid setting x and y to be 0 so we restore the scroll position
+      // when app state changes.
+      if (x === 0 && y === 0) {
+        return state;
+      }
       const oldX = state.scrollingPosition.x;
       const oldY = state.scrollingPosition.y;
       let horizontalScrollDirection = "";
@@ -32,13 +39,25 @@ const Reducer = (state, action) => {
         },
       };
     }
-    case SET_MAIN_SCROLLBAR_INSTANCE:
-      return { ...state, mainScrollBar: action.mainScrollBar };
-    case WINDOW_RESIZE:
+    case SET_MAIN_SCROLLBAR_INSTANCE: {
+      const { mainScrollBar } = action;
+      if (mainScrollBar) {
+        mainScrollBar.updatePluginOptions("onInitPlugin", {
+          x: state.scrollingPosition.x,
+          y: state.scrollingPosition.y,
+        });
+      }
+      return { ...state, mainScrollBar };
+    }
+    case WINDOW_RESIZE: {
+      state.mainScrollBar?.update();
       return {
         ...state,
         windowSize: { width: action.width, height: action.height },
       };
+    }
+    case SET_APP_STATE:
+      return { ...state, appState: action.appState };
     default:
       return state;
   }

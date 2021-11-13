@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useEffect } from "react";
+import React, { useContext, useEffect, useCallback } from "react";
 import styled from "styled-components";
 import scrollbar from "../utils/scrollbar";
 import NavbarComponent from "./Navbar";
@@ -6,11 +6,14 @@ import Footer from "./Footer";
 import ProgressBarComponent from "./ProgressBar";
 import { Context } from "../store";
 import {
+  APP_STATE,
+  SET_APP_STATE,
   SET_MAIN_SCROLLBAR_INSTANCE,
   UPDATE_SCROLLING_DATA,
   WINDOW_RESIZE,
 } from "../reducer";
-import { screenSize } from "../utils";
+import { device, screenSize } from "../utils";
+import theme from "../theme";
 
 const LayoutComponent = styled.div`
   display: flex;
@@ -24,16 +27,38 @@ const LayoutComponent = styled.div`
   bottom: 0;
   left: 0;
   margin-top: 70px;
+
+  @media only screen and ${device.tablet} {
+    position: static;
+    margin-top: 0px;
+  }
 `;
 
-const Main = styled.div``;
+const Header = styled.div`
+  @media only screen and ${device.tablet} {
+    position: fixed;
+    width: 100%;
+    background: ${theme.background};
+    z-index: 5;
+  }
+`;
+
+const Main = styled.div`
+  overflow: hidden;
+`;
 
 const Layout = ({ children }) => {
-  const [, dispatch] = useContext(Context);
-  const ref = useRef(null);
+  const [state, dispatch] = useContext(Context);
 
   function updateScrollingData(scrollBar) {
-    const { x, y } = scrollBar.offset;
+    let [x, y] = [0, 0];
+    if (scrollBar?.offset) {
+      x = scrollBar.offset.x;
+      y = scrollBar.offset.y;
+    } else {
+      x = window?.scrollX;
+      y = window?.scrollY;
+    }
 
     dispatch({
       type: UPDATE_SCROLLING_DATA,
@@ -51,17 +76,30 @@ const Layout = ({ children }) => {
     });
   }
 
-  useEffect(() => {
-    if (ref.current) {
-      const mainScrollBar = scrollbar.init(ref.current, {
-        onScroll: updateScrollingData,
-        // temporary needs to fix later
-        damping: window.innerWidth <= screenSize.tablet ? 0.1 : 0.025,
-      });
-      mainScrollBar.addListener(updateScrollingData);
-      dispatch({ type: SET_MAIN_SCROLLBAR_INSTANCE, mainScrollBar });
-    }
+  const refCallback = useCallback((node) => {
+    if (node) {
+      window?.removeEventListener("scroll", updateScrollingData);
 
+      const mainScrollBar = scrollbar.init(node, {
+        damping: 0.025,
+      });
+      dispatch({ type: SET_MAIN_SCROLLBAR_INSTANCE, mainScrollBar });
+      dispatch({ type: SET_APP_STATE, appState: APP_STATE.DESKTOP });
+
+      mainScrollBar.addListener(updateScrollingData);
+      mainScrollBar.addListener(handleResize);
+      mainScrollBar.scrollTo(
+        state.scrollingPosition?.x,
+        state.scrollingPosition?.y
+      );
+    } else {
+      // Destorying the root scrollbar to avoid any issue
+      scrollbar.destroyAll();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
     // Window Resize
     if (typeof window !== "undefined") {
       // Add event listener
@@ -77,16 +115,39 @@ const Layout = ({ children }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  useEffect(() => {
+    if (
+      state.windowSize.width <= screenSize.tablet &&
+      state.appState !== APP_STATE.MOBILE
+    ) {
+      dispatch({ type: SET_MAIN_SCROLLBAR_INSTANCE, mainScrollBar: null });
+      dispatch({ type: SET_APP_STATE, appState: APP_STATE.MOBILE });
+      window.scrollTo(state.scrollingPosition?.x, state.scrollingPosition?.y);
+      window?.addEventListener("scroll", updateScrollingData);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state.windowSize?.width, state.windowSize?.height]);
+
   return (
     <>
-      <NavbarComponent />
-      <ProgressBarComponent />
+      <Header>
+        <NavbarComponent />
+        <ProgressBarComponent />
+      </Header>
       <LayoutComponent id="main">
-        <Main ref={ref}>
-          {children}
-          <ProgressBarComponent />
-          <Footer />
-        </Main>
+        {state.windowSize.width > screenSize.tablet ? (
+          <Main ref={refCallback}>
+            {children}
+            <ProgressBarComponent />
+            <Footer />
+          </Main>
+        ) : (
+          <Main>
+            {children}
+            <ProgressBarComponent />
+            <Footer />
+          </Main>
+        )}
       </LayoutComponent>
     </>
   );

@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
+import { APP_STATE } from "../reducer";
 import { Context } from "../store";
 import theme from "../theme";
 import { device } from "../utils";
@@ -43,13 +44,13 @@ const Word = styled.span`
 
 function SlidingHeading({ word }) {
   const [state] = useContext(Context);
-  const { mainScrollBar, scrollingPosition } = state;
+  const { mainScrollBar, scrollingPosition, appState } = state;
   const [completedPercentage, setCompletedPercentage] = useState(null);
 
   const ref = useRef();
 
   useEffect(() => {
-    if (ref.current && mainScrollBar && mainScrollBar.isVisible(ref.current)) {
+    if (ref.current) {
       const targetElement = ref.current.getBoundingClientRect();
       const relativeTop = targetElement.height - targetElement.top;
       setCompletedPercentage((relativeTop * 100) / targetElement.height - 50);
@@ -61,7 +62,10 @@ function SlidingHeading({ word }) {
       <Wrapper>
         <div
           style={{
-            transform: `translateX(calc(-50% - ${completedPercentage * 0.5}%))`,
+            transform: `translateX(calc(-50% - ${
+              completedPercentage *
+              (appState === APP_STATE.DESKTOP ? 0.1 : 0.15)
+            }%))`,
           }}
         >
           {new Array(16).fill(1).map((s, idx) => (

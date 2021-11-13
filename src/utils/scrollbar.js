@@ -14,6 +14,7 @@ class StopScrollPlugin extends ScrollbarPlugin {
   }
 }
 
+// eslint-disable-next-line no-unused-vars
 class HorizontalScrollPlugin extends ScrollbarPlugin {
   static pluginName = "horizontalScroll";
 
@@ -37,5 +38,20 @@ class HorizontalScrollPlugin extends ScrollbarPlugin {
   }
 }
 
-ScrollBar.use(StopScrollPlugin, HorizontalScrollPlugin);
+class UpdateScrollPositionOnInit extends ScrollbarPlugin {
+  static pluginName = "onInitPlugin";
+
+  static defaultOptions = {
+    x: 0,
+    y: 0,
+  };
+
+  onInit() {
+    this.scrollbar.scrollTo(this.options.x, this.options.y);
+    // Adding a bit momentum to fix scrolling
+    this.scrollbar.addMomentum(0, 2);
+  }
+}
+
+ScrollBar.use(StopScrollPlugin, UpdateScrollPositionOnInit);
 export default ScrollBar;
