@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import { defaultSectionStyling, device } from "../utils";
 import Button from "./Button";
@@ -6,14 +6,21 @@ import Button from "./Button";
 const LandingWrapper = styled(defaultSectionStyling)`
   height: calc(100vh - 70px);
   position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  @media only screen and ${device.mobileHeight} and ${device.tablet} {
+    margin-top: 70px;
+  }
 `;
 
 const Section = styled.div`
   text-align: center;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  // position: absolute;
+  // top: 50%;
+  // left: 50%;
+  // transform: translate(-50%, -50%);
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -25,7 +32,11 @@ const IntroSpan = styled.span`
   margin-bottom: 12px;
 
   @media only screen and ${device.mobileL} {
-    font-size: 16px;
+    font-size: 3vw;
+  }
+
+  @media only screen and ${device.laptop} and ${device.landscape} {
+    font-size: 2vw;
   }
 `;
 
@@ -39,7 +50,11 @@ const HeadingText = styled.span`
   }
 
   @media only screen and ${device.tabletS} {
-    font-size: 6vw;
+    font-size: 5vw;
+  }
+
+  @media only screen and ${device.laptop} and ${device.landscape} {
+    font-size: 3vw;
   }
 `;
 
@@ -50,59 +65,64 @@ const FloatingElements = styled.div`
   background-position: center center;
   width: ${(props) => props.width}px;
   height: ${(props) => props.height}px;
-  top: ${(props) => props.top}%;
-  left: ${(props) => props.left};
-  bottom: ${(props) => props.bottom}%;
-  right: ${(props) => props.right};
+  top: ${(props) => props.top || "unset"};
+  left: ${(props) => props.left || "unset"};
+  bottom: ${(props) => props.bottom || "unset"};
+  right: ${(props) => props.right || "unset"};
   position: absolute;
   animation: float 2s infinite ease-in-out;
   @keyframes float {
     0% {
-      transform: translateY(${(props) => props.top || props.bottom}%);
+      transform: translateY(${(props) => props.top || props.bottom});
     }
     50% {
       transform: translateY(
-        calc(${(props) => props.top || props.bottom}% - 10px)
+        calc(${(props) => props.top || props.bottom} - 10px)
       );
     }
     100% {
-      transform: translateY(${(props) => props.top || props.bottom}%);
+      transform: translateY(${(props) => props.top || props.bottom});
     }
+  }
+
+  @media only screen and ${device.laptop} and ${device.landscape} {
+    width: 10vw;
+    height: 10vw;
   }
 
   @media only screen and ${device.mobileL},
-    ${device.tablet} and ${device.landscape} {
-    width: 70px;
-    height: 70px;
+    ${device.tablet} and ${device.potrait} {
+    width: 15vw;
+    height: 15vw;
   }
 `;
 
-const LandingComponent = () => {
-  const [moveX, setMoveX] = useState(0);
-  const [moveY, setMoveY] = useState(0);
-  const ref = useRef(null);
+function LandingComponent() {
+  // const [moveX, setMoveX] = useState(0);
+  // const [moveY, setMoveY] = useState(0);
+  // const ref = useRef(null);
 
-  const handleMouseMove = (e) => {
-    const { clientX, clientY } = e;
-    const { clientWidth, clientHeight } = ref.current;
+  // const handleMouseMove = (e) => {
+  //   const { clientX, clientY } = e;
+  //   const { clientWidth, clientHeight } = ref.current;
 
-    const Xpercenatage = (clientX * 100) / clientWidth - 50;
-    const Ypercenatage = (clientY * 100) / clientHeight - 50;
-    setMoveX(Xpercenatage * 0.6);
-    setMoveY(Ypercenatage * 0.8);
-  };
+  //   const Xpercenatage = (clientX * 100) / clientWidth - 50;
+  //   const Ypercenatage = (clientY * 100) / clientHeight - 50;
+  //   setMoveX(Xpercenatage * 0.6);
+  //   setMoveY(Ypercenatage * 0.8);
+  // };
 
-  // eslint-disable-next-line consistent-return
-  useEffect(() => {
-    if (ref.current) {
-      const elem = ref.current;
-      elem.addEventListener("mousemove", handleMouseMove);
-      return () => elem.removeEventListener("mousemove", handleMouseMove);
-    }
-  }, []);
+  // // eslint-disable-next-line consistent-return
+  // useEffect(() => {
+  //   if (ref.current) {
+  //     const elem = ref.current;
+  //     elem.addEventListener("mousemove", handleMouseMove);
+  //     return () => elem.removeEventListener("mousemove", handleMouseMove);
+  //   }
+  // }, []);
 
   return (
-    <LandingWrapper ref={ref}>
+    <LandingWrapper>
       <Section>
         <IntroSpan>
           Namaste, I am Riken Shah{" "}
@@ -124,7 +144,7 @@ const LandingComponent = () => {
         width={120}
         height={100}
         left="15%"
-        bottom="15"
+        bottom="15%"
         style={
           {
             // bottom: `calc(15% - ${scrollingPosition.y * 0.1}px)`,
@@ -136,16 +156,18 @@ const LandingComponent = () => {
         url="static/3d-semicolon.png"
         width={120}
         height={100}
-        top="10"
+        top="20%"
         // top={`calc(10% + ${scrollingPosition.y * 0.3}px)`}
-        style={{
-          // top: `calc(10% + ${scrollingPosition.y * 0.2}px)`,
-          transform: `rotateX(${moveX}deg) rotateY(${moveY}deg)`,
-        }}
+        style={
+          {
+            // top: `calc(10% + ${scrollingPosition.y * 0.2}px)`,
+            // transform: `rotateX(${moveX}deg) rotateY(${moveY}deg)`,
+          }
+        }
         right="15%"
       />
     </LandingWrapper>
   );
-};
+}
 
 export default LandingComponent;

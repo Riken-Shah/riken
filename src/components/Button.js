@@ -13,7 +13,7 @@ const ButtonWrapper = styled.div`
   position: relative;
 
   @media only screen and ${device.mobileL} {
-    width: 150px;
+    width: 40vw;
   }
 `;
 
@@ -31,7 +31,7 @@ const Button = styled.div`
   cursor: pointer;
 
   @media only screen and ${device.mobileL} {
-    font-size: 12px;
+    font-size: 3.5vw;
   }
 `;
 

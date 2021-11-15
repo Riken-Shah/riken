@@ -107,8 +107,12 @@ const ExperienceContainer = styled.div`
   }
 
   @media only screen and ${device.tabletSHeight} {
-    margin: 60px 0;
+    // margin: 60px 0;
     display: block;
+  }
+
+  @media only screen and ${device.tabletSHeight} and ${device.tablet} {
+    margin: 60px 0;
   }
 `;
 
@@ -124,6 +128,10 @@ const CompanyName = styled.span`
     ${device.tablet} and ${device.mobileHeight} {
     font-size: 30px;
   }
+
+  @media only screen and ${device.mobileM} {
+    font-size: 10vw;
+  }
 `;
 
 const TagLine = styled.span`
@@ -137,6 +145,10 @@ const TagLine = styled.span`
     ${device.tablet} and ${device.mobileHeight} {
     padding-top: 5px;
     font-size: 12px;
+  }
+
+  @media only screen and ${device.mobileM} {
+    font-size: 4vw;
   }
 `;
 
@@ -189,6 +201,10 @@ const RoleWrapper = styled.div`
 
   @media only screen and ${device.tablet} and ${device.mobileHeight} {
     max-width: 40vw;
+  }
+
+  @media only screen and ${device.mobileM} {
+    max-width: 100%;
   }
 `;
 
