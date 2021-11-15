@@ -25,6 +25,8 @@ export const device = {
   desktopL: `(max-width: ${screenSize.desktop}px)`,
   landscape: `(orientation: landscape)`,
   potrait: `(orientation: potrait)`,
+  mobileHeight: `(max-height: 600px)`,
+  tabletSHeight: `(max-height: 720px)`,
 };
 
 export const defaultSectionStyling = styled.div`

@@ -37,7 +37,7 @@ const data = [
     ],
   },
   {
-    name: "DSC IEM Blog",
+    name: "IEM Blog",
     tagline: "Blogs App To Inspire",
     roles: [
       {
@@ -96,16 +96,19 @@ const InnerWrapper = styled.div`
 
 const ExperienceContainer = styled.div`
   width: 100vw;
-  height: 100vh;
+  height: calc(100vh - 100px);
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0 40px;
-
+  padding: 100px 40px 0;
+  transition: opacity 0.1s ease;
   @media only screen and ${device.tablet} {
     padding: 0 20px;
-    height: auto;
-    margin: 5vh;
+  }
+
+  @media only screen and ${device.tabletSHeight} {
+    margin: 60px 0;
+    display: block;
   }
 `;
 
@@ -118,7 +121,7 @@ const CompanyName = styled.span`
   }
 
   @media only screen and ${device.mobileL},
-    ${device.tablet} and ${device.landscape} {
+    ${device.tablet} and ${device.mobileHeight} {
     font-size: 30px;
   }
 `;
@@ -131,7 +134,7 @@ const TagLine = styled.span`
   color: ${theme.secondary};
 
   @media only screen and ${device.mobileL},
-    ${device.tablet} and ${device.landscape} {
+    ${device.tablet} and ${device.mobileHeight} {
     padding-top: 5px;
     font-size: 12px;
   }
@@ -140,32 +143,25 @@ const TagLine = styled.span`
 const SectionWrapper = styled.div`
   display: flex;
 
-  // @media only screen and ${device.tablet} {
-  //   flex-direction: column;
-  //   margin-top: 15vh;
-  //   height: 80vh;
-  // }
-
   @media only screen and ${device.tablet} {
     height: auto;
     margin-top: auto;
     flex-direction: column;
   }
 
-  // @media only screen and ${device.tablet} and ${device.landscape} {
-  //   margin-top: 38vh;
-  //   height: 80vh;
+  @media only screen and ${device.tablet} and ${device.mobileHeight} {
+    flex-direction: row;
+  }
 
-  //   flex-direction: row;
-  // }
+  @media only screen and ${device.mobileM} {
+    flex-direction: column;
+  }
 `;
 
 const Section = styled.div`
   flex: 1;
-  // background: red;
 
   @media only screen and ${device.tablet} {
-    // flex: none;
     flex: 1;
   }
 `;
@@ -187,11 +183,11 @@ const RoleWrapper = styled.div`
   padding-bottom: 12px;
 
   @media only screen and ${device.mobileL},
-    ${device.tablet} and ${device.landscape} {
+    ${device.tablet} and ${device.mobileHeight} {
     padding-bottom: 0;
   }
 
-  @media only screen and ${device.tablet} and ${device.landscape} {
+  @media only screen and ${device.tablet} and ${device.mobileHeight} {
     max-width: 40vw;
   }
 `;
@@ -202,7 +198,7 @@ const SectionTitle = styled.span`
   font-weight: 700;
 
   @media only screen and ${device.mobileL},
-    ${device.tablet} and ${device.landscape} {
+    ${device.tablet} and ${device.mobileHeight} {
     padding: 5px 0;
     font-size: 15px;
   }
@@ -215,7 +211,7 @@ const RoleText = styled.span`
   line-height: 25px;
 
   @media only screen and ${device.mobileL},
-    ${device.tablet} and ${device.landscape} {
+    ${device.tablet} and ${device.mobileHeight} {
     font-size: 13px;
   }
 `;
@@ -231,7 +227,7 @@ const BulletPoint = styled.div`
   }
 
   @media only screen and ${device.tabletS},
-    ${device.tablet} and ${device.landscape} {
+    ${device.tablet} and ${device.mobileHeight} {
     font-size: 15px;
     line-height: 25px;
     margin-bottom: 12px;
@@ -242,7 +238,7 @@ const BulletPoint = styled.div`
   }
 
   @media only screen and ${device.mobileL},
-    ${device.tablet} and ${device.landscape} {
+    ${device.tablet} and ${device.mobileHeight} {
     font-size: 12px;
     line-height: 22px;
   }
@@ -272,7 +268,7 @@ const TechnologyImgWrapper = styled.div`
   padding: 10px 0;
 
   @media only screen and ${device.tabletS},
-    ${device.tablet} and ${device.landscape} {
+    ${device.tablet} and ${device.mobileHeight} {
     grid-row-gap: 15px;
     grid-column-gap: 10px;
     width: 180px;
@@ -285,62 +281,82 @@ const Technology = styled.img`
   border-radius: 15px;
 
   @media only screen and ${device.mobileL},
-    ${device.tablet} and ${device.landscape} {
+    ${device.tablet} and ${device.mobileHeight} {
     width: 80px;
     height: 30px;
     border-radius: 5px;
   }
 
-  @media only screen and ${device.tablet} and ${device.landscape}, {
+  @media only screen and ${device.tablet} and ${device.mobileHeight}, {
     &:not(:first-of-type):not(:nth-of-type(2)) {
       display: none;
     }
   }
 `;
 
-const ExperinceDiv = ({ name, tagline, roles, points }) => (
-  <ExperienceContainer>
-    <SectionWrapper>
-      <Section>
-        <CompanyName>{name}</CompanyName>
-        <br />
-        <TagLine>{tagline}</TagLine>
-        <RolesWrapper>
-          <SectionTitle>{roles.length > 1 ? "Roles" : "Role"}</SectionTitle>
-          {roles.map((role) => (
-            <RoleWrapper key={role.title}>
-              <RoleText>{role.title}</RoleText>
-              <br />
-              <RoleText>
-                ({role.duration.start}-{role.duration.end})
-              </RoleText>
-            </RoleWrapper>
-          ))}
-        </RolesWrapper>
-        <TechnologyWrapper>
-          <SectionTitle>Technology</SectionTitle>
-          <TechnologyImgWrapper>
-            <Technology src="/static/django-logo-negative.png" />
-            <Technology src="/static/handlebars.png" />
-            <Technology src="static/jQuery-Logo.jpg" />
-            <Technology src="/static/postgress.png" />
-          </TechnologyImgWrapper>
-        </TechnologyWrapper>
-      </Section>
+const ExperinceDiv = ({
+  name,
+  tagline,
+  roles,
+  points,
+  section,
+  percentage,
+  activeSection,
+}) => {
+  const isPartialyVisible =
+    section === activeSection - 1 ? percentage > 40 : false;
+  return (
+    <ExperienceContainer
+      style={{
+        opacity:
+          section < activeSection - 1
+            ? 0
+            : isPartialyVisible &&
+              (percentage > 90 ? 0 : (100 - percentage) / 100),
+      }}
+    >
+      <SectionWrapper>
+        <Section>
+          <CompanyName>{name}</CompanyName>
+          <br />
+          <TagLine>{tagline}</TagLine>
+          <RolesWrapper>
+            <SectionTitle>{roles.length > 1 ? "Roles" : "Role"}</SectionTitle>
+            {roles.map((role) => (
+              <RoleWrapper key={role.title}>
+                <RoleText>{role.title}</RoleText>
+                <br />
+                <RoleText>
+                  ({role.duration.start}-{role.duration.end})
+                </RoleText>
+              </RoleWrapper>
+            ))}
+          </RolesWrapper>
+          <TechnologyWrapper>
+            <SectionTitle>Technology</SectionTitle>
+            <TechnologyImgWrapper>
+              <Technology src="/static/django-logo-negative.png" />
+              <Technology src="/static/handlebars.png" />
+              <Technology src="static/jQuery-Logo.jpg" />
+              <Technology src="/static/postgress.png" />
+            </TechnologyImgWrapper>
+          </TechnologyWrapper>
+        </Section>
 
-      <BulletPointSection>
-        <SectionTitle>Highlights</SectionTitle>
-        {points.map((point, idx) => (
-          // eslint-disable-next-line react/no-array-index-key
-          <BulletPoint key={idx}>{point}</BulletPoint>
-        ))}
-        <ButtonElement style={{ alignSelf: "self-start" }}>
-          Learn More
-        </ButtonElement>
-      </BulletPointSection>
-    </SectionWrapper>
-  </ExperienceContainer>
-);
+        <BulletPointSection>
+          <SectionTitle>Highlights</SectionTitle>
+          {points.map((point, idx) => (
+            // eslint-disable-next-line react/no-array-index-key
+            <BulletPoint key={idx}>{point}</BulletPoint>
+          ))}
+          <ButtonElement style={{ alignSelf: "self-start" }}>
+            Learn More
+          </ButtonElement>
+        </BulletPointSection>
+      </SectionWrapper>
+    </ExperienceContainer>
+  );
+};
 
 const ProgressBarWrapper = styled.div`
   width: 100vw;
@@ -379,7 +395,7 @@ const CheckPointsWrapper = styled.div`
   margin-top: -16px;
 
   @media only screen and ${device.mobileL},
-    ${device.tablet} and ${device.landscape} {
+    ${device.tablet} and ${device.mobileHeight} {
     margin-top: -12px;
   }
 `;
@@ -396,7 +412,7 @@ const CheckPoint = styled.div`
   z-index: 1;
 
   @media only screen and ${device.mobileL},
-    ${device.tablet} and ${device.landscape} {
+    ${device.tablet} and ${device.mobileHeight} {
     width: 30px;
     height: 30px;
   }
@@ -409,7 +425,7 @@ const Dot = styled.div`
   background: ${theme.primary};
 
   @media only screen and ${device.mobileL},
-    ${device.tablet} and ${device.landscape} {
+    ${device.tablet} and ${device.mobileHeight} {
     width: 8px;
     height: 8px;
   }
@@ -418,23 +434,18 @@ const Dot = styled.div`
 const ProgressBar = ({ top, left, completed }) => {
   const [state] = useContext(Context);
 
+  // eslint-disable-next-line no-unused-vars
   const getOffset = ({ width, height }) => {
-    if (typeof width !== "undefined" && typeof height !== "undefined") {
-      const isLandscape = width > height;
-      if (width < screenSize.tablet) {
-        if (isLandscape) {
-          return 1.9;
-        }
-        return 1;
-      }
+    if (height < 750) {
+      return "75vh";
     }
-    return 13.5;
+    return "13.5%";
   };
 
   return (
     <ProgressBarWrapper
       style={{
-        top: `calc(${top}px + ${getOffset(state.windowSize)}%)`,
+        top: `calc(${top}px + ${getOffset(state.windowSize)})`,
         left,
       }}
     >
@@ -505,22 +516,30 @@ const Experince = () => {
   }, [mainScrollBar]);
 
   useEffect(() => {
-    if (ref.current && mainScrollBar && mainScrollBar.isVisible(ref.current)) {
-      mainScrollBar.updatePluginOptions("horizontalScroll", { enable: true });
-      const percentage =
-        ((offset.y - bounding.top) * 100) / ref.current.offsetHeight;
+    if (ref.current) {
+      if (mainScrollBar && mainScrollBar.isVisible(ref.current)) {
+        mainScrollBar.updatePluginOptions("horizontalScroll", { enable: true });
+        const percentage =
+          ((offset.y - bounding.top) * 100) / ref.current.offsetHeight;
 
-      // Setting Max Value as 99.99 to make end scrolling smooth
-      setPercentageCompleted(
-        percentage > 100 ? 99.99 : Math.min(percentage, 99.99)
-      );
-    } else if (mainScrollBar) {
-      mainScrollBar.updatePluginOptions("horizontalScroll", {
-        enable: false,
-      });
+        // Setting Max Value as 99.99 to make end scrolling smooth
+        setPercentageCompleted(
+          percentage > 100 ? 99.99 : Math.min(percentage, 99.99)
+        );
+      } else if (mainScrollBar) {
+        mainScrollBar.updatePluginOptions("horizontalScroll", {
+          enable: false,
+        });
+      } else {
+        const percentage =
+          (scrollingPosition.y * 100) / ref.current.offsetHeight;
+        setPercentageCompleted(
+          percentage > 100 ? 99.99 : Math.min(percentage, 99.99)
+        );
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [scrollingPosition]);
+  }, [scrollingPosition.x, scrollingPosition.y]);
 
   // Main Logic For Moving the Experince Div Horizonatally
   const calcualteTransform = () => {
@@ -550,8 +569,19 @@ const Experince = () => {
             left: scrollingPosition.x,
           }}
         >
-          {data.map((exp) => (
-            <ExperinceDiv key={exp.name} {...exp} />
+          {data.map((exp, idx) => (
+            <ExperinceDiv
+              key={exp.name}
+              {...exp}
+              section={idx + 1}
+              activeSection={Math.ceil(
+                percentageCompleted / eachSectionPercentage
+              )}
+              percentage={
+                ((percentageCompleted % eachSectionPercentage) * 100) /
+                eachSectionPercentage
+              }
+            />
           ))}
         </InnerWrapper>
         <ProgressBar
