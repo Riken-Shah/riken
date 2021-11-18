@@ -54,7 +54,7 @@ const Details = styled.div`
   max-width: 600px;
 
   @media only screen and ${device.laptop} {
-    font-size: 15px;
+    font-size: 16px;
   }
 
   @media only screen and ${device.tablet} {
@@ -88,7 +88,7 @@ const InputOuterWrapper = styled.div`
   &:focus-within .wave {
     opacity: 1 !important;
     transform: translateX(0%);
-    transition-duration: 1s, 0.4s;
+    transition-duration: 1s, 1s;
   }
 `;
 
@@ -116,6 +116,7 @@ const Input = styled.input`
 
   &:focus {
     border-color: ${theme.primary} !important;
+    outline: none;
   }
 
   &::placeholder {
@@ -164,6 +165,7 @@ const Wave = styled.div`
   &:not(:focus) {
     transition: all 0s ease;
   }
+
   @media only screen and ${device.laptop} {
     top: -12px;
   }

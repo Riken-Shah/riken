@@ -26,6 +26,15 @@ html, body {
 a, a:visited, a:hover, a:active {
   color: inherit;
 }
+
+// Avoid Safari Auto Zoom to Input Elements
+@media screen and (-webkit-min-device-pixel-ratio:0) { 
+  select,
+  textarea,
+  input {
+    font-size: 16px;
+  }
+}
 `;
 
 export default function MyApp(props) {

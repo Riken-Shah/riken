@@ -95,6 +95,8 @@ const MobileResumeButton = styled(MenuButton)`
   left: 0;
   margin: 15px 0 0 20px;
   text-align: center;
+  z-index: 7;
+  background: red;
 `;
 
 const LogoIcon = styled.a`
@@ -386,7 +388,7 @@ const NavbarComponent = () => {
           >
             <MobileNavbarBackground
               style={{
-                transform: openMobileNavbar ? "scale(6)" : "scale(0)",
+                transform: openMobileNavbar ? "scale(8)" : "scale(0)",
                 zIndex: openMobileNavbar && !showMobileNavbarContent ? 2 : -1,
               }}
             />
