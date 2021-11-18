@@ -346,7 +346,7 @@ const NavbarComponent = () => {
           <SunGlasses src="static/sunglasses.png" isActive={isLightMode} />
         </ThemeToggleWrapper>
         <ResumeLink as="div">
-          <Link href="/resume" target="_blank" isActive>
+          <Link href="/resume.pdf" target="_blank" isActive>
             <span>Résumé</span>
           </Link>
         </ResumeLink>
@@ -398,7 +398,7 @@ const NavbarComponent = () => {
             >
               <MobileResumeButton
                 as="a"
-                href="/resume"
+                href="/resume.pdf"
                 target="_blank"
                 isActive
               >
