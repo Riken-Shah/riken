@@ -11,6 +11,7 @@ const OuterWraper = styled.div`
 
 const Wrapper = styled.div`
   overflow: hidden;
+  transition: all 0.5s ease;
 `;
 
 const Observer = styled.div`

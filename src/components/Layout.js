@@ -132,7 +132,7 @@ const Layout = ({ children }) => {
             state.appState === APP_STATE.DESKTOP
               ? desktopObserver.current
               : undefined,
-          threshold: 0.5,
+          threshold: state.appState === APP_STATE.DESKTOP ? 0.5 : 0.1,
         }
       );
 

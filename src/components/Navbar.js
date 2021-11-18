@@ -381,6 +381,7 @@ const NavbarComponent = () => {
           <MobileNavbarWrapper
             style={{
               zIndex: openMobileNavbar || showMobileNavbarContent ? 1 : -1,
+              visibility: openMobileNavbar ? "visible" : "hidden",
             }}
           >
             <MobileNavbarBackground

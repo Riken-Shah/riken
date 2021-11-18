@@ -11,7 +11,7 @@ import ButtonElement from "./Button";
 import SlidingHeading from "./SlidingHeading";
 import { Context, sections } from "../store";
 import { device, screenSize } from "../utils";
-import { ADD_SECTION_ELEMENT } from "../reducer";
+import { ADD_SECTION_ELEMENT, APP_STATE } from "../reducer";
 
 const data = [
   {
@@ -111,6 +111,13 @@ const ExperienceContainer = styled.div`
   transition: opacity 0.1s ease;
   @media only screen and ${device.tablet} {
     padding: 0 20px;
+    margin: 5vh 0;
+    height: auto;
+    display: block;
+
+    &:first-of-type {
+      margin-top: 10vh;
+    }
   }
 
   @media only screen and ${device.tabletSHeight} {
@@ -119,7 +126,7 @@ const ExperienceContainer = styled.div`
   }
 
   @media only screen and ${device.tabletSHeight} and ${device.tablet} {
-    margin: 60px 0;
+    // margin: 8vh 0;
   }
 `;
 
@@ -325,9 +332,13 @@ const ExperinceDiv = ({
   section,
   percentage,
   activeSection,
+  appState,
 }) => {
+  const breakingPointPercentage = appState === APP_STATE.MOBILE ? 60 : 40;
   const isPartialyVisible =
-    section === activeSection - 1 ? percentage > 40 : false;
+    section === activeSection - 1
+      ? percentage > breakingPointPercentage
+      : false;
   return (
     <ExperienceContainer
       style={{
@@ -631,6 +642,7 @@ const Experince = () => {
                 ((percentageCompleted % eachSectionPercentage) * 100) /
                 eachSectionPercentage
               }
+              appState={state.appState}
             />
           ))}
         </InnerWrapper>

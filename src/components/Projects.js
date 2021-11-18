@@ -40,7 +40,10 @@ const ProjectWrapper = styled.div`
   justify-content: center;
 
   @media only screen and ${device.tablet} {
-    padding: 10vh 20px;
+    padding: 0 20px;
+    height: 60vh;
+    display: flex;
+    margin: 40px 0;
   }
 `;
 
@@ -59,17 +62,30 @@ const Project = styled.div`
   }
 
   @media only screen and ${device.tablet} {
-    margin: 40px 0 0;
+    margin: 20vw 0 0;
     height: auto;
+  }
+
+  @media only screen and ${device.tablet} and ${device.landscape} {
+    margin: 40px 0 0;
   }
 `;
 const ProjectNumber = styled.div`
   width: 65px;
   padding-top: 12px;
 
-  @media only screen and ${device.mobileL} {
-    padding-top: 4px;
+  // @media only screen and ${device.mobileL} {
+  //   padding-top: 4px;
+  //   font-size: 4vw;
+  // }
+
+  @media only screen and ${device.tablet} {
     font-size: 4vw;
+    margin-right: 2vw;
+  }
+
+  @media only screen and ${device.tablet} and ${device.landscape} {
+    font-size: 3vw;
   }
 `;
 
@@ -83,12 +99,16 @@ const Title = styled.span`
   transition: all 0.4s ease-out;
 
   @media only screen and ${device.tablet} {
-    font-size: 25px;
+    font-size: 9vw;
   }
 
-  @media only screen and ${device.mobileL} {
-    font-size: 6vw;
+  @media only screen and ${device.tablet} and ${device.landscape} {
+    font-size: 4vw;
   }
+
+  // @media only screen and ${device.mobileL} {
+  //   font-size: 6vw;
+  // }
 `;
 
 const Tagline = styled.span`
@@ -99,8 +119,16 @@ const Tagline = styled.span`
   padding-top: 5px;
   display: block;
 
+  @media only screen and ${device.tablet} {
+    font-size: 5vw;
+  }
+
   @media only screen and ${device.mobileL} {
     font-size: 4vw;
+  }
+
+  @media only screen and ${device.tablet} and ${device.landscape} {
+    font-size: 3vw;
   }
 `;
 
@@ -147,9 +175,9 @@ function Projects() {
   }
 
   return (
-    <ProjectSectionWrapper>
+    <ProjectSectionWrapper ref={refCallback} data-index={sections.project}>
       <SlidingHeading word="PROJECTS" />
-      <ProjectWrapper ref={refCallback} data-index={sections.project}>
+      <ProjectWrapper>
         {data.map((project, idx) => (
           <Project
             onClick={() => window.open(project.href)}

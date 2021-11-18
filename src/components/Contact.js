@@ -6,7 +6,7 @@ import { defaultSectionStyling, device } from "../utils";
 import SlidingHeading from "./SlidingHeading";
 import ButtonElement from "./Button";
 import { Context, sections } from "../store";
-import { ADD_SECTION_ELEMENT } from "../reducer";
+import { ADD_SECTION_ELEMENT, APP_STATE } from "../reducer";
 
 const ContactOuterWraper = styled.div`
   display: flex;
@@ -308,6 +308,12 @@ function Contact() {
     }
   };
 
+  const handleBlur = (e) => {
+    if (globalState.appState === APP_STATE.MOBILE) {
+      setTimeout(() => e.target.scrollIntoViewIfNeeded(), 500);
+    }
+  };
+
   const resetState = () => {
     setName("");
     setEmail("");
@@ -325,7 +331,7 @@ function Contact() {
       const timeout = setTimeout(() => {
         mainScrollBar?.updatePluginOptions("stopScroll", { stop: false });
         setIsFormSuccess(false);
-      }, 2000);
+      }, 4000);
 
       return () => clearTimeout(timeout);
     }
@@ -387,6 +393,8 @@ function Contact() {
               value={reason}
               errorMessage={reasonError}
               style={{ borderBottom: "solid 1px #7f7f7f" }}
+              onBlur={handleBlur}
+              onFocus={handleBlur}
               onChange={(e) =>
                 handleChange(
                   e.target.value,
