@@ -1,5 +1,7 @@
-import React from "react";
+import React, { useContext, useCallback } from "react";
 import styled from "styled-components";
+import { ADD_SECTION_ELEMENT } from "../reducer";
+import { Context, sections } from "../store";
 import { defaultSectionStyling, device } from "../utils";
 import Button from "./Button";
 
@@ -121,8 +123,23 @@ function LandingComponent() {
   //   }
   // }, []);
 
+  const [state, dispatch] = useContext(Context);
+  const refCallback = useCallback(
+    (node) => {
+      if (node) {
+        dispatch({
+          type: ADD_SECTION_ELEMENT,
+          elementType: sections.home,
+          element: node,
+        });
+      }
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [state.appState]
+  );
+
   return (
-    <LandingWrapper>
+    <LandingWrapper ref={refCallback} data-index={sections.home}>
       <Section>
         <IntroSpan>
           Namaste, I am Riken Shah{" "}

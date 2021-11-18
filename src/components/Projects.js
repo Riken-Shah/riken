@@ -2,10 +2,10 @@ import React, { useCallback, useContext, useState } from "react";
 import styled from "styled-components";
 import { TweenMax } from "gsap";
 import SlidingHeading from "./SlidingHeading";
-import { Context } from "../store";
+import { Context, sections } from "../store";
 import theme from "../theme";
 import { device } from "../utils";
-import { APP_STATE } from "../reducer";
+import { ADD_SECTION_ELEMENT, APP_STATE } from "../reducer";
 
 const data = [
   {
@@ -35,6 +35,9 @@ const ProjectWrapper = styled.div`
   flex-direction: column;
   position: relative;
   z-index: 3;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
 
   @media only screen and ${device.tablet} {
     padding: 10vh 20px;
@@ -113,7 +116,22 @@ function Projects() {
   const [tween, setTween] = useState(null);
   const [activeImageIdx, setActiveImageIdx] = useState(0);
   const [top, setTop] = useState(0);
-  const [state] = useContext(Context);
+  const [state, dispatch] = useContext(Context);
+
+  const refCallback = useCallback(
+    (node) => {
+      if (node) {
+        dispatch({
+          type: ADD_SECTION_ELEMENT,
+          elementType: sections.project,
+          element: node,
+        });
+      }
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [state.appState]
+  );
+
   const onRefChange = useCallback((node) => {
     if (node) {
       // eslint-disable-next-line global-require
@@ -131,7 +149,7 @@ function Projects() {
   return (
     <ProjectSectionWrapper>
       <SlidingHeading word="PROJECTS" />
-      <ProjectWrapper>
+      <ProjectWrapper ref={refCallback} data-index={sections.project}>
         {data.map((project, idx) => (
           <Project
             onClick={() => window.open(project.href)}

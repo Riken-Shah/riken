@@ -53,5 +53,9 @@ class UpdateScrollPositionOnInit extends ScrollbarPlugin {
   }
 }
 
-ScrollBar.use(StopScrollPlugin, UpdateScrollPositionOnInit);
+ScrollBar.use(
+  StopScrollPlugin,
+  UpdateScrollPositionOnInit,
+  HorizontalScrollPlugin
+);
 export default ScrollBar;

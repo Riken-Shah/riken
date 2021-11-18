@@ -1,10 +1,17 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, {
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+  useCallback,
+} from "react";
 import styled from "styled-components";
 import theme from "../theme";
 import ButtonElement from "./Button";
 import SlidingHeading from "./SlidingHeading";
-import { Context } from "../store";
+import { Context, sections } from "../store";
 import { device, screenSize } from "../utils";
+import { ADD_SECTION_ELEMENT } from "../reducer";
 
 const data = [
   {
@@ -447,6 +454,14 @@ const Dot = styled.div`
   }
 `;
 
+const Observer = styled.div`
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
+  // background: red;
+  margin-top: 10vh;
+`;
+
 const ProgressBar = ({ top, left, completed }) => {
   const [state] = useContext(Context);
 
@@ -483,11 +498,25 @@ const eachSectionPercentage = 100 / data.length;
 
 const Experince = () => {
   const ref = useRef(null);
-  const [state] = useContext(Context);
+  const [state, dispatch] = useContext(Context);
   const { mainScrollBar, scrollingPosition } = state;
   const [top, setTop] = useState(0);
   const [percentageCompleted, setPercentageCompleted] = useState(0);
   const { bounding, offset } = mainScrollBar || {};
+
+  const refCallback = useCallback(
+    (node) => {
+      if (node) {
+        dispatch({
+          type: ADD_SECTION_ELEMENT,
+          elementType: sections.work,
+          element: node,
+        });
+      }
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [state.appState]
+  );
 
   const updateInnerWrapperPosition = () => {
     const widht = window?.innerWidth;
@@ -574,6 +603,11 @@ const Experince = () => {
     <>
       <SlidingHeading word="EXPERIENCES" />
       <OuterWrapper ref={ref}>
+        <Observer
+          ref={refCallback}
+          data-index={sections.work}
+          style={{ position: "absolute", top, left: scrollingPosition.x }}
+        />
         <InnerWrapper
           style={{
             transform: `translateX(${

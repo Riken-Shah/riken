@@ -1,11 +1,12 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState, useCallback } from "react";
 import styled from "styled-components";
 import { useForm } from "@formspree/react";
 import theme from "../theme";
 import { defaultSectionStyling, device } from "../utils";
 import SlidingHeading from "./SlidingHeading";
 import ButtonElement from "./Button";
-import { Context } from "../store";
+import { Context, sections } from "../store";
+import { ADD_SECTION_ELEMENT } from "../reducer";
 
 const ContactOuterWraper = styled.div`
   display: flex;
@@ -235,7 +236,7 @@ const InputItem = ({ type = "text", errorMessage = "", ...extra }) => (
 );
 
 function Contact() {
-  const [globalState] = useContext(Context);
+  const [globalState, dispatch] = useContext(Context);
   const { mainScrollBar } = globalState;
   const [state, handleSubmit] = useForm("xrgrnzyp");
   const [name, setName] = useState("");
@@ -248,6 +249,20 @@ function Contact() {
   const [allGood, setAllGood] = useState(false);
   const [isFormSuccess, setIsFormSuccess] = useState(false);
   const [didFormFail, setDidFormFail] = useState(false);
+
+  const refCallback = useCallback(
+    (node) => {
+      if (node) {
+        dispatch({
+          type: ADD_SECTION_ELEMENT,
+          elementType: sections.contact,
+          element: node,
+        });
+      }
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [state.appState]
+  );
 
   const checkEmail = (alert = true) => {
     const emailRe =
@@ -321,7 +336,7 @@ function Contact() {
   }, [state.succeeded, state.errors]);
 
   return (
-    <ContactOuterWraper>
+    <ContactOuterWraper ref={refCallback} data-index={sections.contact}>
       <SlidingHeading word="CONTACT" />
       <ContactInnerWrapper>
         <Section>

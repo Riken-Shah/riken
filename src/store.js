@@ -1,6 +1,8 @@
 import React, { createContext, useReducer } from "react";
 import Reducer from "./reducer";
 
+export const sections = { home: 0, work: 1, project: 2, contact: 3 };
+
 const initialState = {
   mainScrollBar: null,
   appState: null,
@@ -11,6 +13,9 @@ const initialState = {
     verticleScrollDirection: "right",
   },
   windowSize: { height: undefined, width: undefined },
+  activeSection: sections.home,
+  rootObserver: null,
+  sectionElements: new Map(),
 };
 
 const Store = ({ children }) => {

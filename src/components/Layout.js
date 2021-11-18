@@ -1,4 +1,10 @@
-import React, { useContext, useEffect, useCallback } from "react";
+import React, {
+  useContext,
+  useEffect,
+  useCallback,
+  useRef,
+  useState,
+} from "react";
 import styled from "styled-components";
 import scrollbar from "../utils/scrollbar";
 import NavbarComponent from "./Navbar";
@@ -11,6 +17,8 @@ import {
   SET_MAIN_SCROLLBAR_INSTANCE,
   UPDATE_SCROLLING_DATA,
   WINDOW_RESIZE,
+  SET_OBSERVER,
+  SET_VISIBLE_SECTION,
 } from "../reducer";
 import { device, screenSize } from "../utils";
 import theme from "../theme";
@@ -49,6 +57,8 @@ const Main = styled.div`
 
 const Layout = ({ children }) => {
   const [state, dispatch] = useContext(Context);
+  const [isAllElemObserved, setIsAllElemObserved] = useState(false);
+  const desktopObserver = useRef(null);
 
   function updateScrollingData(scrollBar) {
     let [x, y] = [0, 0];
@@ -101,9 +111,32 @@ const Layout = ({ children }) => {
 
   useEffect(() => {
     // Window Resize
+
     if (typeof window !== "undefined") {
       // Add event listener
       window.addEventListener("resize", handleResize);
+      const observer = new window.IntersectionObserver(
+        (entries) => {
+          // eslint-disable-next-line array-callback-return
+          entries.map((entry) => {
+            if (entry.isIntersecting) {
+              dispatch({
+                type: SET_VISIBLE_SECTION,
+                item: entry.target.getAttribute("data-index"),
+              });
+            }
+          });
+        },
+        {
+          root:
+            state.appState === APP_STATE.DESKTOP
+              ? desktopObserver.current
+              : undefined,
+          threshold: 0.5,
+        }
+      );
+
+      dispatch({ type: SET_OBSERVER, observer });
 
       // Call handler right away so state gets updated with initial window size
       handleResize();
@@ -114,6 +147,24 @@ const Layout = ({ children }) => {
     return () => {};
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    if (state.rootObserver) {
+      state.sectionElements.forEach((elem) => state.rootObserver.observe(elem));
+      setIsAllElemObserved(true);
+    }
+    return () => {
+      if (
+        isAllElemObserved &&
+        state.rootObserver &&
+        state.sectionElements.size === 4
+      ) {
+        state.sectionElements.forEach((elem) =>
+          state.rootObserver.unobserve(elem)
+        );
+      }
+    };
+  }, [isAllElemObserved, state.rootObserver, state.sectionElements]);
 
   useEffect(() => {
     if (
@@ -134,7 +185,7 @@ const Layout = ({ children }) => {
         <NavbarComponent />
         <ProgressBarComponent />
       </Header>
-      <LayoutComponent id="main">
+      <LayoutComponent id="main" ref={desktopObserver}>
         {state.windowSize.width > screenSize.tablet ? (
           <Main ref={refCallback}>
             {children}
