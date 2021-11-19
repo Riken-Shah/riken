@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState, useCallback } from "react";
 import styled from "styled-components";
 import { useForm } from "@formspree/react";
-import theme from "../theme";
 import { defaultSectionStyling, device } from "../utils";
 import SlidingHeading from "./SlidingHeading";
 import ButtonElement from "./Button";
@@ -102,7 +101,7 @@ const Input = styled.input`
   border: none;
   font-size: 18px;
   width: 100%;
-  color: ${theme.primary};
+  color: ${({ theme }) => theme.primary};
   padding: 12px 0;
   margin-bottom: 10px;
   font-weight: 400;
@@ -115,7 +114,7 @@ const Input = styled.input`
   }
 
   &:focus {
-    border-color: ${theme.primary} !important;
+    border-color: ${({ theme }) => theme.primary} !important;
     outline: none;
   }
 
@@ -150,7 +149,7 @@ const Wave = styled.div`
   width: 300%;
   height: 60px;
   mask-image: url(static/curve.svg);
-  background: ${theme.primary};
+  background: ${({ theme }) => theme.primary};
   background-position: center bottom;
   transition: transform 1000ms cubic-bezier(0, 0.25, 0.5, 1) 0ms,
     opacity 0s ease;
@@ -174,7 +173,7 @@ const Wave = styled.div`
 const Success = styled.div`
   height: 100vh;
   width: 100vw;
-  background: ${theme.background};
+  background: ${({ theme }) => theme.background};
   position: absolute;
   transition: top 0.5s ease-in-out, opacity 0.5s ease-in;
   padding: 0 30px;

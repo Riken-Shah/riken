@@ -2,6 +2,7 @@ import React, { createContext, useReducer } from "react";
 import Reducer from "./reducer";
 
 export const sections = { home: 0, work: 1, project: 2, contact: 3 };
+export const themes = { DARK: "DARK", LIGHT: "LIGHT" };
 
 const initialState = {
   mainScrollBar: null,
@@ -17,6 +18,7 @@ const initialState = {
   rootObserver: null,
   sectionElements: new Map(),
   cursorScale: 1,
+  theme: themes.DARK,
 };
 
 const Store = ({ children }) => {

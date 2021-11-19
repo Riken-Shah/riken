@@ -65,6 +65,7 @@ const FloatingElements = styled.div`
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center center;
+  filter: brightness(1.3);
   width: ${(props) => props.width}px;
   height: ${(props) => props.height}px;
   top: ${(props) => props.top || "unset"};

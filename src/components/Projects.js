@@ -3,7 +3,6 @@ import styled from "styled-components";
 import { TweenMax } from "gsap";
 import SlidingHeading from "./SlidingHeading";
 import { Context, sections } from "../store";
-import theme from "../theme";
 import { device } from "../utils";
 import { ADD_SECTION_ELEMENT, APP_STATE, SET_CURSOR_SCALE } from "../reducer";
 
@@ -56,8 +55,9 @@ const Project = styled.div`
 
   &:hover {
     .title {
-      color: ${theme.background};
-      text-shadow: ${`-1px -1px 0 ${theme.primary}, 1px -1px 0 ${theme.primary}, -1px 1px 0 ${theme.primary}, 1px 1px 0 ${theme.primary}`};
+      color: ${({ theme }) => theme.background};
+      text-shadow: ${({ theme }) =>
+        `-1px -1px 0 ${theme.primary}, 1px -1px 0 ${theme.primary}, -1px 1px 0 ${theme.primary}, 1px 1px 0 ${theme.primary}`};
     }
   }
 
@@ -115,7 +115,7 @@ const Tagline = styled.span`
   font-family: Montserrat;
   font-weight: 400;
   font-size: 17px;
-  color: #a7a7a7;
+  color: ${({ theme }) => theme.secondary};
   padding-top: 5px;
   display: block;
 

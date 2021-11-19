@@ -31,6 +31,7 @@ const Button = styled.div`
   color: inherit;
   font-family: inherit;
   cursor: pointer;
+  color: #ffffff;
 
   @media only screen and ${device.mobileL} {
     font-size: 3.5vw;

@@ -6,7 +6,7 @@ import React, {
   useCallback,
 } from "react";
 import styled from "styled-components";
-import theme from "../theme";
+
 import ButtonElement from "./Button";
 import SlidingHeading from "./SlidingHeading";
 import { Context, sections } from "../store";
@@ -153,7 +153,7 @@ const TagLine = styled.span`
   padding-top: 15px;
   font-size: 15px;
   font-weight: 400;
-  color: ${theme.secondary};
+  color: ${({ theme }) => theme.secondary};
 
   @media only screen and ${device.mobileL},
     ${device.tablet} and ${device.mobileHeight} {
@@ -236,7 +236,7 @@ const SectionTitle = styled.span`
 
 const RoleText = styled.span`
   font-weight: 400;
-  color: ${theme.secondary};
+  color: ${({ theme }) => theme.secondary};
   font-size: 15px;
   line-height: 25px;
 
@@ -401,7 +401,7 @@ const ProgressBarWrapper = styled.div`
   display: flex;
   align-items: center;
   padding: 0 40px;
-
+  filter: brightness(1.2);
   @media only screen and ${device.tablet} {
     padding: 0 20px;
     display: none;
@@ -437,9 +437,9 @@ const CheckPointsWrapper = styled.div`
 const CheckPoint = styled.div`
   width: 38px;
   height: 38px;
-  background: ${theme.background};
+  background: ${({ theme }) => theme.background};
   border-radius: 50%;
-  border: solid 1px ${theme.primary};
+  border: solid 1px ${({ theme }) => theme.primary};
   display: flex;
   justify-content: center;
   align-items: center;
@@ -456,7 +456,7 @@ const Dot = styled.div`
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  background: ${theme.primary};
+  background: ${({ theme }) => theme.primary};
 
   @media only screen and ${device.mobileL},
     ${device.tablet} and ${device.mobileHeight} {

@@ -1,8 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
-import { APP_STATE, SET_CURSOR_SCALE } from "../reducer";
-import { Context } from "../store";
-import theme from "../theme";
+import { APP_STATE, SET_CURSOR_SCALE, SET_THEME } from "../reducer";
+import { Context, themes } from "../store";
 import { device } from "../utils";
 
 const NavbarWraper = styled.div`
@@ -52,7 +51,7 @@ const Link = styled.a`
   text-decoration: none;
   font-weight: 400;
   cursor: pointer;
-  border: solid ${theme.primary};
+  border: solid ${({ theme }) => theme.primary};
   border-width: ${(props) => (props.isActive ? "0.5px" : "0px")};
   border-radius: 20px;
   padding: 10px 25px;
@@ -140,7 +139,7 @@ const ActiveDotWrapper = styled.div`
 const ActiveDot = styled.div`
   width: 5px;
   height: 5px;
-  background: ${theme.primary};
+  background: ${({ theme }) => theme.primary};
   border-radius: 50%;
   position: absolute;
   transition: all 1s ease;
@@ -160,7 +159,7 @@ const MobileNavbarWrapper = styled.div`
 const MobileNavbarBackground = styled.div`
   width: 100vh;
   height: 100vh;
-  background: #323232;
+  background: ${({ theme }) => theme.secondaryLight};
   position: absolute;
   top: -70vh;
   left: 101vw;
@@ -207,9 +206,10 @@ const MobileNavbarMenuItem = styled.div`
   font-size: 12vw;
   padding: 10px;
   display: block;
-  color: ${(props) => (props.isActive ? "#323232" : theme.primary)};
-  text-shadow: ${(props) =>
-    props.isActive
+  color: ${({ isActive, theme }) =>
+    isActive ? theme.secondaryLight : theme.primary};
+  text-shadow: ${({ isActive, theme }) =>
+    isActive
       ? `-1px -1px 0 ${theme.primary}, 1px -1px 0 ${theme.primary}, -1px 1px 0 ${theme.primary}, 1px 1px 0 ${theme.primary}`
       : "none"};
 
@@ -233,15 +233,13 @@ const navItems = [
   { title: "Contact", centerOffset: "6px" },
 ];
 
-const NavbarComponent = () => {
+const NavbarComponent = ({ setTheme }) => {
   const [state, dispatch] = useContext(Context);
   const activeSection = parseInt(state.activeSection, 10);
   const [elementsRef, setElementsRef] = useState(new Map());
   const [openMobileNavbar, setOpenMobileNavbar] = useState(false);
   const [showMobileNavbarContent, setShowMobileNavbarContent] = useState(false);
   const [middlePosition, setMiddlePosition] = useState(0);
-
-  const [isLightMode, setsLightMode] = useState(false);
 
   const handleClick = (idx) => {
     const target = state.sectionElements?.get(idx);
@@ -253,6 +251,16 @@ const NavbarComponent = () => {
         block: "start",
         inline: "start",
       });
+    }
+  };
+
+  const handleThemeChange = () => {
+    if (state.theme === themes.DARK) {
+      dispatch({ type: SET_THEME, theme: themes.LIGHT });
+      setTheme(themes.LIGHT);
+    } else {
+      dispatch({ type: SET_THEME, theme: themes.DARK });
+      setTheme(themes.DARK);
     }
   };
 
@@ -351,13 +359,16 @@ const NavbarComponent = () => {
             />
           </ActiveDotWrapper>
         </NavbarItemsWrapper>
-        <ThemeToggleWrapper onClick={() => setsLightMode(!isLightMode)}>
+        <ThemeToggleWrapper onClick={handleThemeChange}>
           <ThemeToggler>
             <span role="img" aria-label="smile">
               🙂
             </span>
           </ThemeToggler>
-          <SunGlasses src="static/sunglasses.png" isActive={isLightMode} />
+          <SunGlasses
+            src="static/sunglasses.png"
+            isActive={state.theme === themes.DARK}
+          />
         </ThemeToggleWrapper>
         <ResumeLink
           as="div"

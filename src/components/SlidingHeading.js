@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { APP_STATE } from "../reducer";
 import { Context } from "../store";
-import theme from "../theme";
 import { device } from "../utils";
 
 const OuterWraper = styled.div`
@@ -26,9 +25,10 @@ const Observer = styled.div`
 
 const Word = styled.span`
   font-family: "Druk Wide Bold";
-  color: ${(props) => (props.isBorder ? theme.background : theme.primary)};
-  text-shadow: ${(props) =>
-    props.isBorder
+  color: ${({ isBorder, theme }) =>
+    isBorder ? theme.background : theme.primary};
+  text-shadow: ${({ theme, isBorder }) =>
+    isBorder
       ? `-1px -1px 0 ${theme.primary}, 1px -1px 0 ${theme.primary}, -1px 1px 0 ${theme.primary}, 1px 1px 0 ${theme.primary}`
       : "none"};
   font-size: 60px;

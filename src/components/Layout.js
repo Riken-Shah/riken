@@ -10,7 +10,7 @@ import scrollbar from "../utils/scrollbar";
 import NavbarComponent from "./Navbar";
 import Footer from "./Footer";
 import ProgressBarComponent from "./ProgressBar";
-import { Context } from "../store";
+import { Context, themes } from "../store";
 import {
   APP_STATE,
   SET_APP_STATE,
@@ -21,7 +21,6 @@ import {
   SET_VISIBLE_SECTION,
 } from "../reducer";
 import { device, screenSize } from "../utils";
-import theme from "../theme";
 
 const LayoutComponent = styled.div`
   display: flex;
@@ -46,7 +45,7 @@ const Header = styled.div`
   @media only screen and ${device.tablet} {
     position: fixed;
     width: 100%;
-    background: ${theme.background};
+    background: ${({ theme }) => theme.background};
     z-index: 5;
   }
 `;
@@ -58,20 +57,21 @@ const Main = styled.div`
 const CustomCursor = styled.div`
   width: 30px;
   height: 30px;
-  background: ${theme.primary};
+  background: #ffffff;
   border-radius: 50%;
   position: fixed;
   transition: transform 0.5s ease-in;
   transform: translate(-50%, -50%);
   pointer-events: none;
-  mix-blend-mode: difference;
+  mix-blend-mode: ${(themeName) =>
+    themeName === themes.DARK ? "difference" : "exclusion"};
 
   @media only screen and ${device.tablet} {
     display: none;
   }
 `;
 
-const Layout = ({ children }) => {
+const Layout = ({ children, setTheme }) => {
   const [state, dispatch] = useContext(Context);
   const [isAllElemObserved, setIsAllElemObserved] = useState(false);
   const desktopObserver = useRef(null);
@@ -212,7 +212,7 @@ const Layout = ({ children }) => {
   return (
     <>
       <Header>
-        <NavbarComponent />
+        <NavbarComponent setTheme={setTheme} />
         <ProgressBarComponent />
       </Header>
       <LayoutComponent id="main" ref={desktopObserver}>
@@ -232,6 +232,7 @@ const Layout = ({ children }) => {
       </LayoutComponent>
       <CustomCursor
         className="custom-cursor"
+        themeName={state.theme}
         ref={cursorRef}
         style={{
           transform: `scale(${state.cursorScale}) translate(${
