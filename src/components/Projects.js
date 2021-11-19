@@ -5,7 +5,7 @@ import SlidingHeading from "./SlidingHeading";
 import { Context, sections } from "../store";
 import theme from "../theme";
 import { device } from "../utils";
-import { ADD_SECTION_ELEMENT, APP_STATE } from "../reducer";
+import { ADD_SECTION_ELEMENT, APP_STATE, SET_CURSOR_SCALE } from "../reducer";
 
 const data = [
   {
@@ -182,6 +182,12 @@ function Projects() {
           <Project
             onClick={() => window.open(project.href)}
             key={project.name}
+            onMouseEnter={() => {
+              dispatch({ type: SET_CURSOR_SCALE, cursorScale: 2 });
+            }}
+            onMouseLeave={() => {
+              dispatch({ type: SET_CURSOR_SCALE, cursorScale: 1 });
+            }}
             onMouseOver={(e) => {
               setTop(e.target.offsetTop - state.windowSize.height * 0.35);
               if (idx !== activeImageIdx) {
