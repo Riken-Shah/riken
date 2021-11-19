@@ -6,7 +6,7 @@ import { defaultSectionStyling, device } from "../utils";
 import SlidingHeading from "./SlidingHeading";
 import ButtonElement from "./Button";
 import { Context, sections } from "../store";
-import { ADD_SECTION_ELEMENT, APP_STATE } from "../reducer";
+import { ADD_SECTION_ELEMENT, APP_STATE, SET_CURSOR_SCALE } from "../reducer";
 
 const ContactOuterWraper = styled.div`
   display: flex;
@@ -172,7 +172,7 @@ const Wave = styled.div`
 `;
 
 const Success = styled.div`
-  height: 92vh;
+  height: 100vh;
   width: 100vw;
   background: ${theme.background};
   position: absolute;
@@ -181,11 +181,49 @@ const Success = styled.div`
   align-items: center;
   display: flex;
   justify-content: center;
+  padding: 10px;
+  overflow-y: scroll;
 `;
 
-const SuccessWrapper = styled.div`
+const SuccessOuterWrapper = styled.div`
   max-width: 600px;
   width: 100%;
+`;
+
+const SuccessInnerWrapper = styled.div`
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  justify-content: center;
+  margin: 0px 0 150px;
+  text-align: center;
+
+  @media only screen and ${device.tablet} and ${device.landscape} {
+    margin-top: 50px;
+    margin-bottom: 0;
+  }
+`;
+
+const CloseButton = styled.div`
+  position: absolute;
+  top: 150%;
+  font-size: 30px;
+  left: 45%;
+  border: solid 0.5px;
+  padding: 10px;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  text-align: center;
+
+  @media only screen and ${device.mobileL} {
+    font-size: 6vw;
+    width: 12vw;
+    height: 12vw;
+    left: 40%;
+    padding: 2vw;
+  }
 `;
 
 const SuccessTitle = styled.span`
@@ -248,7 +286,6 @@ function Contact() {
   const [reason, setReason] = useState("");
   const [reasonError, setReasonError] = useState("");
   const [message, setMessage] = useState("");
-  const [allGood, setAllGood] = useState(false);
   const [isFormSuccess, setIsFormSuccess] = useState(false);
   const [didFormFail, setDidFormFail] = useState(false);
 
@@ -288,13 +325,9 @@ function Contact() {
     }
     setError("");
     setDidFormFail(false);
-
-    if (name && email && reason && checkEmail(false)) {
-      setAllGood(true);
-    } else {
-      setAllGood(false);
-    }
   };
+
+  const allGood = name && email && reason && checkEmail(false);
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
@@ -321,7 +354,6 @@ function Contact() {
     setEmail("");
     setReason("");
     setMessage("");
-    setAllGood(false);
   };
 
   // eslint-disable-next-line consistent-return
@@ -329,11 +361,13 @@ function Contact() {
     if (state.succeeded) {
       setIsFormSuccess(true);
       resetState();
+      document.body.style.overflow = "hidden";
       mainScrollBar?.updatePluginOptions("stopScroll", { stop: true });
       const timeout = setTimeout(() => {
         mainScrollBar?.updatePluginOptions("stopScroll", { stop: false });
         setIsFormSuccess(false);
-      }, 4000);
+        document.body.style.overflow = "inherit";
+      }, 9999000);
 
       return () => clearTimeout(timeout);
     }
@@ -351,7 +385,16 @@ function Contact() {
           <Details>
             If you want to work together on a project or just have a chat,
             please don&#39;t hesitate to contact me. <br />
-            <EmailLink href="mailto:rikenshah.02@gmail.com" target="_blank">
+            <EmailLink
+              href="mailto:rikenshah.02@gmail.com"
+              target="_blank"
+              onMouseEnter={() => {
+                dispatch({ type: SET_CURSOR_SCALE, cursorScale: 2 });
+              }}
+              onMouseLeave={() => {
+                dispatch({ type: SET_CURSOR_SCALE, cursorScale: 1 });
+              }}
+            >
               rikenshah.02@gmail.com
             </EmailLink>
           </Details>
@@ -468,11 +511,23 @@ function Contact() {
           setIsFormSuccess(false);
         }}
       >
-        <SuccessWrapper>
-          <SuccessTitle>Thank You 🤗</SuccessTitle>
-          <br />
-          <SuccessSpan>I&#39;ll reach out to you soon 🚀</SuccessSpan>
-        </SuccessWrapper>
+        <SuccessOuterWrapper>
+          <SuccessInnerWrapper>
+            <SuccessTitle>Thank You 🤗</SuccessTitle>
+            <br />
+            <SuccessSpan>I&#39;ll reach out to you soon 🚀</SuccessSpan>
+            <CloseButton
+              onMouseEnter={() => {
+                dispatch({ type: SET_CURSOR_SCALE, cursorScale: 2 });
+              }}
+              onMouseLeave={() => {
+                dispatch({ type: SET_CURSOR_SCALE, cursorScale: 1 });
+              }}
+            >
+              x
+            </CloseButton>
+          </SuccessInnerWrapper>
+        </SuccessOuterWrapper>
       </Success>
     </ContactOuterWraper>
   );
