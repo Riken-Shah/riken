@@ -471,6 +471,10 @@ const Observer = styled.div`
   z-index: -1;
   // background: red;
   margin-top: 10vh;
+
+  @media only screen and ${device.tablet} {
+    margin-top: 0vh;
+  }
 `;
 
 const ProgressBar = ({ top, left, completed }) => {
@@ -612,12 +616,16 @@ const Experince = () => {
   // Concept Inspiration: https://university.webflow.com/lesson/horizontal-scrolling
   return (
     <>
-      <SlidingHeading word="EXPERIENCES" />
       <OuterWrapper ref={ref}>
+        <SlidingHeading word="EXPERIENCES" />
         <Observer
           ref={refCallback}
           data-index={sections.work}
-          style={{ position: "absolute", top, left: scrollingPosition.x }}
+          style={{
+            position: "absolute",
+            top,
+            left: scrollingPosition.x,
+          }}
         />
         <InnerWrapper
           style={{

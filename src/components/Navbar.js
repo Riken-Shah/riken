@@ -96,7 +96,6 @@ const MobileResumeButton = styled(MenuButton)`
   margin: 15px 0 0 20px;
   text-align: center;
   z-index: 7;
-  background: red;
 `;
 
 const LogoIcon = styled.a`
@@ -248,7 +247,11 @@ const NavbarComponent = () => {
     if (state.appState === APP_STATE.DESKTOP) {
       state.mainScrollBar?.scrollIntoView(target);
     } else {
-      target.scrollIntoView({ behavior: "smooth" });
+      target.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+        inline: "start",
+      });
     }
   };
 
