@@ -5,6 +5,7 @@ export const SET_APP_STATE = "SET_APP_STATE";
 export const SET_VISIBLE_SECTION = "SET_VISIBLE_SECTION";
 export const SET_OBSERVER = "SET_OBSERVER";
 export const ADD_SECTION_ELEMENT = "ADD_SECTION_ELEMENT";
+export const SET_CURSOR_SCALE = "SET_CURSOR_SCALE";
 export const APP_STATE = { DESKTOP: "desktop", MOBILE: "mobile" };
 
 const Reducer = (state, action) => {
@@ -75,6 +76,8 @@ const Reducer = (state, action) => {
       newSectionElements.set(index, element);
       return { ...state, sectionElements: newSectionElements };
     }
+    case SET_CURSOR_SCALE:
+      return { ...state, cursorScale: action.cursorScale };
     default:
       return state;
   }

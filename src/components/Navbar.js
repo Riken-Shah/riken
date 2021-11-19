@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
-import { APP_STATE } from "../reducer";
+import { APP_STATE, SET_CURSOR_SCALE } from "../reducer";
 import { Context } from "../store";
 import theme from "../theme";
 import { device } from "../utils";
@@ -23,6 +23,7 @@ const NavbarItemsWrapper = styled.div`
   margin: 0 25px;
   width: 100%;
   position: relative;
+
   @media only screen and ${device.tablet} {
     display: none;
   }
@@ -233,7 +234,7 @@ const navItems = [
 ];
 
 const NavbarComponent = () => {
-  const [state] = useContext(Context);
+  const [state, dispatch] = useContext(Context);
   const activeSection = parseInt(state.activeSection, 10);
   const [elementsRef, setElementsRef] = useState(new Map());
   const [openMobileNavbar, setOpenMobileNavbar] = useState(false);
@@ -310,7 +311,15 @@ const NavbarComponent = () => {
         <LogoIcon> &#60;/R&#62; </LogoIcon>
         <NavbarItemsWrapper>
           {navItems.map((item, idx) => (
-            <NavLink key={item.title}>
+            <NavLink
+              key={item.title}
+              onMouseEnter={() => {
+                dispatch({ type: SET_CURSOR_SCALE, cursorScale: 2 });
+              }}
+              onMouseLeave={() => {
+                dispatch({ type: SET_CURSOR_SCALE, cursorScale: 1 });
+              }}
+            >
               <Link
                 href={item.href}
                 onClick={(e) => {
@@ -350,7 +359,15 @@ const NavbarComponent = () => {
           </ThemeToggler>
           <SunGlasses src="static/sunglasses.png" isActive={isLightMode} />
         </ThemeToggleWrapper>
-        <ResumeLink as="div">
+        <ResumeLink
+          as="div"
+          onMouseEnter={() => {
+            dispatch({ type: SET_CURSOR_SCALE, cursorScale: 2 });
+          }}
+          onMouseLeave={() => {
+            dispatch({ type: SET_CURSOR_SCALE, cursorScale: 1 });
+          }}
+        >
           <Link href="/resume.pdf" target="_blank" isActive>
             <span>Résumé</span>
           </Link>

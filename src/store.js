@@ -16,6 +16,7 @@ const initialState = {
   activeSection: sections.home,
   rootObserver: null,
   sectionElements: new Map(),
+  cursorScale: 1,
 };
 
 const Store = ({ children }) => {

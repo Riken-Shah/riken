@@ -616,8 +616,8 @@ const Experince = () => {
   // Concept Inspiration: https://university.webflow.com/lesson/horizontal-scrolling
   return (
     <>
+      <SlidingHeading word="EXPERIENCES" />
       <OuterWrapper ref={ref}>
-        <SlidingHeading word="EXPERIENCES" />
         <Observer
           ref={refCallback}
           data-index={sections.work}

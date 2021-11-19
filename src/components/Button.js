@@ -1,5 +1,7 @@
-import React from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
+import { SET_CURSOR_SCALE } from "../reducer";
+import { Context } from "../store";
 import { device } from "../utils";
 
 const ButtonWrapper = styled.div`
@@ -35,12 +37,24 @@ const Button = styled.div`
   }
 `;
 
-const ButtonElement = ({ children, style, ...extra }) => (
-  <ButtonWrapper style={style}>
-    <Button {...extra} style={extra?.buttonStyle}>
-      {children}
-    </Button>
-  </ButtonWrapper>
-);
+const ButtonElement = ({ children, style, ...extra }) => {
+  const [, dispatch] = useContext(Context);
+  return (
+    <ButtonWrapper style={style}>
+      <Button
+        {...extra}
+        style={extra?.buttonStyle}
+        onMouseEnter={() => {
+          dispatch({ type: SET_CURSOR_SCALE, cursorScale: 2 });
+        }}
+        onMouseLeave={() => {
+          dispatch({ type: SET_CURSOR_SCALE, cursorScale: 1 });
+        }}
+      >
+        {children}
+      </Button>
+    </ButtonWrapper>
+  );
+};
 
 export default ButtonElement;

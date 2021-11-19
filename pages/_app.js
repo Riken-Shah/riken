@@ -18,6 +18,7 @@ html, body {
   font-family: "Montserrat";
   margin: 0;
   padding: 0;
+  cursor: default;
 
   .scrollbar-track{
     display: none !important;

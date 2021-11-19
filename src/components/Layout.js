@@ -55,10 +55,27 @@ const Main = styled.div`
   overflow: hidden;
 `;
 
+const CustomCursor = styled.div`
+  width: 30px;
+  height: 30px;
+  background: ${theme.primary};
+  border-radius: 50%;
+  position: fixed;
+  transition: transform 0.5s ease-in;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  mix-blend-mode: difference;
+
+  @media only screen and ${device.tablet} {
+    display: none;
+  }
+`;
+
 const Layout = ({ children }) => {
   const [state, dispatch] = useContext(Context);
   const [isAllElemObserved, setIsAllElemObserved] = useState(false);
   const desktopObserver = useRef(null);
+  const cursorRef = useRef(null);
 
   function updateScrollingData(scrollBar) {
     let [x, y] = [0, 0];
@@ -84,6 +101,15 @@ const Layout = ({ children }) => {
       width: window.innerWidth,
       height: window.innerHeight,
     });
+  }
+
+  function handleMouseMove(e, cursor) {
+    if (cursor) {
+      // eslint-disable-next-line no-param-reassign
+      cursor.style.left = CSS.px(e.clientX);
+      // eslint-disable-next-line no-param-reassign
+      cursor.style.top = CSS.px(e.clientY);
+    }
   }
 
   const refCallback = useCallback((node) => {
@@ -115,6 +141,10 @@ const Layout = ({ children }) => {
     if (typeof window !== "undefined") {
       // Add event listener
       window.addEventListener("resize", handleResize);
+      window.addEventListener("mousemove", (e) =>
+        handleMouseMove(e, cursorRef.current)
+      );
+
       const observer = new window.IntersectionObserver(
         (entries) => {
           // eslint-disable-next-line array-callback-return
@@ -200,6 +230,15 @@ const Layout = ({ children }) => {
           </Main>
         )}
       </LayoutComponent>
+      <CustomCursor
+        className="custom-cursor"
+        ref={cursorRef}
+        style={{
+          transform: `scale(${state.cursorScale}) translate(${
+            -50 / state.cursorScale
+          }%, ${-50 / state.cursorScale}%)`,
+        }}
+      />
     </>
   );
 };
