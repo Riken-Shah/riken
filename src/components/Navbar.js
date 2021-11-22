@@ -115,20 +115,20 @@ const ThemeToggler = styled.div`
   text-align: center;
   border: solid 0.5px #676767;
   border-radius: 50%;
-  padding: 0 4px;
+  padding: 4px;
 
-  span {
+  img {
     display: block;
-    margin-top: 2px;
+    margin-top: 0px;
   }
 `;
 
 const SunGlasses = styled.img`
   position: absolute;
-  top: ${(props) => (props.isActive ? "-50" : "13")}px;
+  top: ${(props) => (props.isActive ? "-50" : "14")}px;
   opacity: ${(props) => (props.isActive ? "0" : "1")};
-  width: 18px;
-  right: 8.5px;
+  width: 20px;
+  right: 10px;
   transition: top 0.3s ease-in, opacity 0.2s ease-in;
 `;
 
@@ -366,9 +366,10 @@ const NavbarComponent = ({ setTheme }) => {
         </NavbarItemsWrapper>
         <ThemeToggleWrapper onClick={handleThemeChange}>
           <ThemeToggler>
-            <span role="img" aria-label="smile">
-              🙂
-            </span>
+            {/* <span role="img" aria-label="smile">
+              // 🙂
+            </span> */}
+            <img src="./static/smile.png" width={30} height={30} alt="" />
           </ThemeToggler>
           <SunGlasses
             src="static/sunglasses.png"
