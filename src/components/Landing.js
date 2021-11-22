@@ -74,6 +74,7 @@ const FloatingElements = styled.div`
   right: ${(props) => props.right || "unset"};
   position: absolute;
   animation: float 2s infinite ease-in-out;
+  z-index: 2;
   @keyframes float {
     0% {
       transform: translateY(${(props) => props.top || props.bottom});
@@ -144,7 +145,11 @@ function LandingComponent() {
       <Section>
         <IntroSpan>
           Namaste, I am Riken Shah{" "}
-          <span role="img" aria-label="hi">
+          <span
+            role="img"
+            aria-label="hi"
+            style={{ zIndex: 2, position: "relative" }}
+          >
             🙏
           </span>
         </IntroSpan>

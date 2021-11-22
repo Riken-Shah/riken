@@ -468,7 +468,7 @@ const Dot = styled.div`
 const Observer = styled.div`
   width: 100vw;
   height: 100vh;
-  z-index: -1;
+  // z-index: -1;
   // background: red;
   margin-top: 10vh;
 

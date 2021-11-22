@@ -13,6 +13,7 @@ const ButtonWrapper = styled.div`
   filter: alpha(opacity=50);
   margin-top: 20px;
   position: relative;
+  z-index: 2;
 
   @media only screen and ${device.mobileL} {
     width: 40vw;

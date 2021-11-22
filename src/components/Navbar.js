@@ -107,7 +107,7 @@ const ThemeToggleWrapper = styled.div`
   margin-right: 20px;
   min-height: 35px;
   position: relative;
-  overflow: hidden;
+  // overflow: hidden;
   margin-top: -7px;
   border: solid 0.5px #676767;
   border-radius: 50%;
@@ -233,7 +233,7 @@ const navItems = [
   { title: "Contact", centerOffset: "6px" },
 ];
 
-const NavbarComponent = ({ setTheme }) => {
+const NavbarComponent = ({ setTheme, setThemeChanging }) => {
   const [state, dispatch] = useContext(Context);
   const activeSection = parseInt(state.activeSection, 10);
   const [elementsRef, setElementsRef] = useState(new Map());
@@ -255,12 +255,13 @@ const NavbarComponent = ({ setTheme }) => {
   };
 
   const handleThemeChange = () => {
+    setThemeChanging(true);
     if (state.theme === themes.DARK) {
       dispatch({ type: SET_THEME, theme: themes.LIGHT });
-      setTheme(themes.LIGHT);
+      setTimeout(() => setTheme(themes.LIGHT), 50023400);
     } else {
       dispatch({ type: SET_THEME, theme: themes.DARK });
-      setTheme(themes.DARK);
+      setTimeout(() => setTheme(themes.DARK), 50002340);
     }
   };
 
@@ -315,6 +316,15 @@ const NavbarComponent = ({ setTheme }) => {
 
   return (
     <>
+      {/* <AnimationZoom
+        className={themeChanging && "active"}
+        data-scale={themeChanging ? 300 : 1}
+        style={{
+          opacity: themeChanging ? 1 : 1,
+          // transform: themeChanging ? "scale(300)" : "scale(1)",
+          // zIndex: themeChanging ? 1 : 1,
+        }}
+      > */}
       <NavbarWraper>
         <LogoIcon> &#60;/R&#62; </LogoIcon>
         <NavbarItemsWrapper>
@@ -361,12 +371,17 @@ const NavbarComponent = ({ setTheme }) => {
         </NavbarItemsWrapper>
         <ThemeToggleWrapper onClick={handleThemeChange}>
           <ThemeToggler>
-            <span role="img" aria-label="smile">
+            <span
+              role="img"
+              aria-label="smile"
+              style={{ zIndex: 2, position: "relative" }}
+            >
               🙂
             </span>
           </ThemeToggler>
           <SunGlasses
             src="static/sunglasses.png"
+            style={{ zIndex: 2, position: "relative" }}
             isActive={state.theme === themes.DARK}
           />
         </ThemeToggleWrapper>
@@ -461,6 +476,7 @@ const NavbarComponent = ({ setTheme }) => {
           </MobileNavbarWrapper>
         )}
       </NavbarWraper>
+      {/* </AnimationZoom> */}
     </>
   );
 };

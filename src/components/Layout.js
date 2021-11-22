@@ -33,7 +33,7 @@ const LayoutComponent = styled.div`
   right: 0;
   bottom: 0;
   left: 0;
-  margin-top: 70px;
+  // margin-top: 70px;
 
   @media only screen and ${device.tablet} {
     position: static;
@@ -42,6 +42,10 @@ const LayoutComponent = styled.div`
 `;
 
 const Header = styled.div`
+  position: fixed;
+  background: black;
+  width: 100%;
+  z-index: 1;
   @media only screen and ${device.tablet} {
     position: fixed;
     width: 100%;
@@ -71,12 +75,52 @@ const CustomCursor = styled.div`
   }
 `;
 
+const AnimationZoom = styled.div`
+  // position: absolute;
+  width: auto;
+  height: auto;
+  // width: 100vw;
+  // height: 100vh;
+  top: 0;
+  left: 0;
+  // overflow: hidden;
+  // pointer-events: none;
+
+  &::before {
+    content: "";
+    pointer-events: none;
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    background: #ffffff;
+    // top: 20%;
+    // left: 15%;
+    top: 0;
+    left: 0;
+    border-radius: 50%;
+    transition: all 10s ease-in-out;
+    transition-property: transform;
+    mix-blend-mode: exclusion;
+    z-index: 1;
+    transform: scale(0);
+  }
+
+  &.active {
+    &::before {
+      transform: scale(150);
+    }
+  }
+`;
+
 const Layout = ({ children, setTheme }) => {
   const [state, dispatch] = useContext(Context);
   const [isAllElemObserved, setIsAllElemObserved] = useState(false);
   const desktopObserver = useRef(null);
   const cursorRef = useRef(null);
-
+  const [themeChanging, setThemeChanging] = useState(false);
+  const AnimationRef = useRef(null);
+  const HeaderRef = useRef(null);
+  const ProgressBarRef = useRef(null);
   function updateScrollingData(scrollBar) {
     let [x, y] = [0, 0];
     if (scrollBar?.offset) {
@@ -85,6 +129,16 @@ const Layout = ({ children, setTheme }) => {
     } else {
       x = window?.scrollX;
       y = window?.scrollY;
+    }
+
+    // if (AnimationRef.current) {
+    //   AnimationRef.current.style.top = CSS.px(y);
+    // }
+    if (HeaderRef.current) {
+      HeaderRef.current.style.top = CSS.px(y);
+    }
+    if (ProgressBarRef.current) {
+      ProgressBarRef.current.style.top = CSS.px(y + 60);
     }
 
     dispatch({
@@ -117,7 +171,8 @@ const Layout = ({ children, setTheme }) => {
       window?.removeEventListener("scroll", updateScrollingData);
 
       const mainScrollBar = scrollbar.init(node, {
-        damping: 0.025,
+        // damping: 0.1,
+        // renderByPixels: true,
       });
       dispatch({ type: SET_MAIN_SCROLLBAR_INSTANCE, mainScrollBar });
       dispatch({ type: SET_APP_STATE, appState: APP_STATE.DESKTOP });
@@ -209,21 +264,65 @@ const Layout = ({ children, setTheme }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.windowSize?.width, state.windowSize?.height]);
 
+  useEffect(() => {
+    let timeout;
+    if (themeChanging) {
+      timeout = setTimeout(() => setThemeChanging(false), 12223000);
+    }
+    return () => {
+      if (timeout) {
+        clearTimeout(timeout);
+      }
+    };
+  }, [themeChanging]);
+
   return (
     <>
-      <Header>
-        <NavbarComponent setTheme={setTheme} />
-        <ProgressBarComponent />
-      </Header>
       <LayoutComponent id="main" ref={desktopObserver}>
         {state.windowSize.width > screenSize.tablet ? (
           <Main ref={refCallback}>
-            {children}
+            <AnimationZoom
+              ref={AnimationRef}
+              className={themeChanging && "active"}
+              // style={{ top: state.scrollingPosition.y }}
+            >
+              <Header
+                // style={{ top: state.mainScrollBar?.offset?.y ?? 0 }}
+                ref={HeaderRef}
+              >
+                <NavbarComponent
+                  setTheme={setTheme}
+                  setThemeChanging={setThemeChanging}
+                />
+              </Header>
+              <div
+                style={{
+                  position: "absolute",
+                  height: "4px",
+                  zIndex: 2,
+                  background: "linear-gradient(to right, #b1c8fc, #bd4e72)",
+                  width: "100%",
+                }}
+                ref={ProgressBarRef}
+              />
+
+              <div style={{ marginTop: "70px", display: "block" }}>
+                {children}
+              </div>
+            </AnimationZoom>
             <ProgressBarComponent />
             <Footer />
           </Main>
         ) : (
           <Main>
+            <Header>
+              <NavbarComponent
+                setTheme={setTheme}
+                setThemeChanging={setThemeChanging}
+              />
+              <ProgressBarComponent />
+            </Header>
+            <AnimationZoom className={themeChanging && "active"} />
             {children}
             <ProgressBarComponent />
             <Footer />
