@@ -35,6 +35,7 @@ const NavLink = styled.li`
 `;
 
 const ResumeLink = styled(NavLink)`
+  margin-left: 20px;
   @media only screen and ${device.tablet} {
     display: none;
   }
@@ -103,28 +104,32 @@ const LogoIcon = styled.a`
 `;
 
 const ThemeToggleWrapper = styled.div`
-  width: 40px;
-  margin-right: 20px;
-  min-height: 35px;
   position: relative;
-  overflow: hidden;
-  margin-top: -7px;
-  border: solid 0.5px #676767;
-  border-radius: 50%;
+  margin-top: -10px;
   cursor: pointer;
 `;
 
 const ThemeToggler = styled.div`
   font-size: 25px;
+  display: block;
   text-align: center;
+  border: solid 0.5px #676767;
+  border-radius: 50%;
+  padding: 0 4px;
+
+  span {
+    display: block;
+    margin-top: 2px;
+  }
 `;
 
 const SunGlasses = styled.img`
   position: absolute;
-  top: ${(props) => (props.isActive ? "-80" : "10")}px;
-  width: 21px;
-  right: 7px;
-  transition: top 0.5s ease-in;
+  top: ${(props) => (props.isActive ? "-50" : "13")}px;
+  opacity: ${(props) => (props.isActive ? "0" : "1")};
+  width: 18px;
+  right: 8.5px;
+  transition: top 0.3s ease-in, opacity 0.2s ease-in;
 `;
 
 const ActiveDotWrapper = styled.div`
@@ -439,7 +444,7 @@ const NavbarComponent = ({ setTheme }) => {
                 <MenuButtonText style={{ left: "13px" }}>Résumé</MenuButtonText>
               </MobileResumeButton>
               {navItems.map((item, idx) => (
-                <>
+                <div key={item.title}>
                   <MobileNavbarMenuItemWrapper>
                     <MobileWrapperActiveDot isActive={idx === activeSection} />
                     <MobileNavbarMenuItem
@@ -455,7 +460,7 @@ const NavbarComponent = ({ setTheme }) => {
                     </MobileNavbarMenuItem>
                   </MobileNavbarMenuItemWrapper>
                   <br />
-                </>
+                </div>
               ))}
             </MobileNavbarContent>
           </MobileNavbarWrapper>

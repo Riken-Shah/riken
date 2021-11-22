@@ -89,7 +89,7 @@ const FloatingElements = styled.div`
   }
 
   @media only screen and ${device.laptop} and ${device.landscape} {
-    width: 10vw;
+    width: 12vw;
     height: 10vw;
   }
 
