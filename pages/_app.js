@@ -9,6 +9,16 @@ import { lightTheme, darkTheme } from "../src/theme";
 import Store, { themes } from "../src/store";
 
 const GlobalStyle = createGlobalStyle`
+
+@font-face {
+  font-family: "Druk Wide Bold";
+  src: url("static/fonts/Druk-Wide-Bold.ttf");
+}
+
+@font-face {
+  font-family: "GT-America Extended-Bold";
+  src: url("static/fonts/GT-America Extended-Bold.ttf");
+}
 * { 
   box-sizing: border-box; 
 }
