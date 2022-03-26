@@ -1,5 +1,5 @@
 /* eslint no-tabs: ["error", { allowIndentationTabs: true }] */
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { ThemeProvider, createGlobalStyle } from "styled-components";
 import { Helmet } from "react-helmet";
@@ -42,6 +42,17 @@ a, a:visited, a:hover, a:active {
 export default function MyApp(props) {
   const { Component, pageProps } = props;
   const [theme, setTheme] = useState(themes.DARK);
+
+  useEffect(() => {
+    setTheme(localStorage.getItem("theme") ?? theme.DARK);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const changeTheme = (newTheme) => {
+    setTheme(newTheme);
+    localStorage.setItem("theme", newTheme);
+  };
+
   const title = "Riken Portfolio";
   return (
     <>
@@ -53,7 +64,7 @@ export default function MyApp(props) {
       <ThemeProvider theme={theme === themes.LIGHT ? lightTheme : darkTheme}>
         <GlobalStyle />
         <Store>
-          <Layout setTheme={setTheme}>
+          <Layout setTheme={changeTheme}>
             <Component {...pageProps} />
           </Layout>
         </Store>

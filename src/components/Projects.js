@@ -7,16 +7,16 @@ import { device } from "../utils";
 import { ADD_SECTION_ELEMENT, APP_STATE, SET_CURSOR_SCALE } from "../reducer";
 
 const data = [
-  {
-    name: "Hand Detection",
-    tagline: "Deep Learning Model",
-    href: "https://www.github.com",
-  },
-  {
-    name: "Insta Page Manager",
-    tagline: "Automation Bot",
-    href: "https://www.github.com",
-  },
+	{
+		name: "Hand Detection",
+		tagline: "Deep Learning Model",
+		href: "https://github.com/Riken-Shah/Hand-Detection"
+	},
+	{
+		name: "Insta Page Manager",
+		tagline: "Automation Bot",
+		href: "https://github.com/Riken-Shah/InstaQuoteBot"
+	}
 ];
 
 const ProjectSectionWrapper = styled.div`

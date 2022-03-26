@@ -377,159 +377,157 @@ function Contact() {
   }, [state.succeeded, state.errors]);
 
   return (
-    <ContactOuterWraper ref={refCallback} data-index={sections.contact}>
-      <SlidingHeading word="CONTACT" />
-      <ContactInnerWrapper>
-        <Section>
-          <Details>
-            If you want to work together on a project or just have a chat,
-            please don&#39;t hesitate to contact me. <br />
-            <EmailLink
-              href="mailto:rikenshah.02@gmail.com"
-              target="_blank"
-              onMouseEnter={() => {
-                dispatch({ type: SET_CURSOR_SCALE, cursorScale: 2 });
-              }}
-              onMouseLeave={() => {
-                dispatch({ type: SET_CURSOR_SCALE, cursorScale: 1 });
-              }}
-            >
-              rikenshah.02@gmail.com
-            </EmailLink>
-          </Details>
-        </Section>
-        <Section>
-          <ContactForm onSubmit={handleFormSubmit} autoComplete="off">
-            <InputItem
-              placeholder="Name"
-              type="text"
-              name="name"
-              value={name}
-              onChange={(e) =>
-                handleChange(
-                  e.target.value,
-                  setName,
-                  setNameError,
-                  "I feel left out :("
-                )
-              }
-              errorMessage={nameError}
-            />
-            <InputItem
-              placeholder="Email"
-              type="text"
-              name="email"
-              value={email}
-              errorMessage={emailError}
-              onChange={(e) =>
-                handleChange(
-                  e.target.value,
-                  setEmail,
-                  setEmailError,
-                  "You forgot about me!"
-                )
-              }
-              onBlur={checkEmail}
-            />
-            <InputItem
-              as="select"
-              name="reason"
-              value={reason}
-              errorMessage={reasonError}
-              style={{ borderBottom: "solid 1px #7f7f7f" }}
-              onBlur={handleBlur}
-              onFocus={handleBlur}
-              onChange={(e) =>
-                handleChange(
-                  e.target.value,
-                  setReason,
-                  setReasonError,
-                  "Please select a reason"
-                )
-              }
-            >
-              {/* eslint-disable jsx-a11y/accessible-emoji */}
-              <Option value="">Why you want to connect with me? 🤔</Option>
-              <Option value="Regarding Project">Regarding Project 🤝</Option>
-              <Option value="Regarding Job Enquiry">
-                Regarding Job Enquiry 👨‍💼
-              </Option>
-              <Option value="Just wanted to have quick chat">
-                Just wanted to have quick chat 😃
-              </Option>
-            </InputItem>
-            <InputItem
-              name="message"
-              placeholder="Any message you want to leave for me? 📨"
-              value={message}
-              onChange={(e) =>
-                handleChange(e.target.value, setMessage, () => {}, "")
-              }
-            />
-            <ErrorMessage>
-              {didFormFail ? "Something went wrong! Try again later" : ""}
-            </ErrorMessage>
-            <ButtonElement
-              style={{
-                width: "185px",
-                opacity: allGood ? "1" : ".5",
-                transition: "opacity .5s ease-in",
-              }}
-              buttonStyle={{
-                height: "43px",
-                width: "170px",
-                paddingRight: "30px",
-              }}
-              type="submit"
-              as="button"
-            >
-              Connect Now{" "}
-              <img
-                src={
-                  state.submitting ? "static/rocket.gif" : "static/rocket.png"
-                }
-                width={20}
-                alt=""
-                style={{ position: "absolute", right: "30px" }}
-              />
-            </ButtonElement>
-          </ContactForm>
-        </Section>
-      </ContactInnerWrapper>
-      <Success
-        style={{
-          top: isFormSuccess
-            ? globalState.scrollingPosition.y
-            : globalState.scrollingPosition.y - globalState.windowSize.height,
-          left: globalState.scrollingPosition.x,
-          opacity: isFormSuccess ? 1 : 0,
-          zIndex: isFormSuccess ? 1 : -1,
-        }}
-        onClick={() => {
-          mainScrollBar?.updatePluginOptions("stopScroll", { stop: false });
-          setIsFormSuccess(false);
-        }}
-      >
-        <SuccessOuterWrapper>
-          <SuccessInnerWrapper>
-            <SuccessTitle>Thank You 🤗</SuccessTitle>
-            <br />
-            <SuccessSpan>I&#39;ll reach out to you soon 🚀</SuccessSpan>
-            <CloseButton
-              onMouseEnter={() => {
-                dispatch({ type: SET_CURSOR_SCALE, cursorScale: 2 });
-              }}
-              onMouseLeave={() => {
-                dispatch({ type: SET_CURSOR_SCALE, cursorScale: 1 });
-              }}
-            >
-              x
-            </CloseButton>
-          </SuccessInnerWrapper>
-        </SuccessOuterWrapper>
-      </Success>
-    </ContactOuterWraper>
-  );
+		<ContactOuterWraper ref={refCallback} data-index={sections.contact}>
+			<SlidingHeading word="CONTACT" />
+			<ContactInnerWrapper>
+				<Section>
+					<Details>
+						If you want to work together on a project or just have a chat,
+						please don&#39;t hesitate to contact me. <br />
+						<EmailLink
+							href="mailto:rikenshah.02@gmail.com"
+							target="_blank"
+							onMouseEnter={() => {
+								dispatch({ type: SET_CURSOR_SCALE, cursorScale: 2 });
+							}}
+							onMouseLeave={() => {
+								dispatch({ type: SET_CURSOR_SCALE, cursorScale: 1 });
+							}}
+						>
+							rikenshah.02@gmail.com
+						</EmailLink>
+					</Details>
+				</Section>
+				<Section>
+					<ContactForm onSubmit={handleFormSubmit} autoComplete="off">
+						<InputItem
+							placeholder="Name"
+							type="text"
+							name="name"
+							value={name}
+							onChange={(e) =>
+								handleChange(
+									e.target.value,
+									setName,
+									setNameError,
+									"I feel left out :("
+								)
+							}
+							errorMessage={nameError}
+						/>
+						<InputItem
+							placeholder="Email"
+							type="text"
+							name="email"
+							value={email}
+							errorMessage={emailError}
+							onChange={(e) =>
+								handleChange(
+									e.target.value,
+									setEmail,
+									setEmailError,
+									"You forgot about me!"
+								)
+							}
+							onBlur={checkEmail}
+						/>
+						<InputItem
+							as="select"
+							name="reason"
+							value={reason}
+							errorMessage={reasonError}
+							style={{ borderBottom: "solid 1px #7f7f7f" }}
+							onBlur={handleBlur}
+							onFocus={handleBlur}
+							onChange={(e) =>
+								handleChange(
+									e.target.value,
+									setReason,
+									setReasonError,
+									"Please select a reason"
+								)
+							}
+						>
+							{/* eslint-disable jsx-a11y/accessible-emoji */}
+							<Option value="">Why you want to connect with me? 🤔</Option>
+							<Option value="Regarding Project">Regarding Project 🤝</Option>
+							<Option value="Regarding Job Enquiry">Regarding Job 👨‍💼</Option>
+							<Option value="Just wanted to have quick chat">
+								Just wanted to have quick chat 😃
+							</Option>
+						</InputItem>
+						<InputItem
+							name="message"
+							placeholder="Any message you want to leave for me? 📨"
+							value={message}
+							onChange={(e) =>
+								handleChange(e.target.value, setMessage, () => {}, "")
+							}
+						/>
+						<ErrorMessage>
+							{didFormFail ? "Something went wrong! Try again later" : ""}
+						</ErrorMessage>
+						<ButtonElement
+							style={{
+								width: "185px",
+								opacity: allGood ? "1" : ".5",
+								transition: "opacity .5s ease-in"
+							}}
+							buttonStyle={{
+								height: "43px",
+								width: "170px",
+								paddingRight: "30px"
+							}}
+							type="submit"
+							as="button"
+						>
+							Connect Now{" "}
+							<img
+								src={
+									state.submitting ? "static/rocket.gif" : "static/rocket.png"
+								}
+								width={20}
+								alt=""
+								style={{ position: "absolute", right: "30px" }}
+							/>
+						</ButtonElement>
+					</ContactForm>
+				</Section>
+			</ContactInnerWrapper>
+			<Success
+				style={{
+					top: isFormSuccess
+						? globalState.scrollingPosition.y
+						: globalState.scrollingPosition.y - globalState.windowSize.height,
+					left: globalState.scrollingPosition.x,
+					opacity: isFormSuccess ? 1 : 0,
+					zIndex: isFormSuccess ? 1 : -1
+				}}
+				onClick={() => {
+					mainScrollBar?.updatePluginOptions("stopScroll", { stop: false });
+					setIsFormSuccess(false);
+				}}
+			>
+				<SuccessOuterWrapper>
+					<SuccessInnerWrapper>
+						<SuccessTitle>Thank You 🤗</SuccessTitle>
+						<br />
+						<SuccessSpan>I&#39;ll reach out to you soon 🚀</SuccessSpan>
+						<CloseButton
+							onMouseEnter={() => {
+								dispatch({ type: SET_CURSOR_SCALE, cursorScale: 2 });
+							}}
+							onMouseLeave={() => {
+								dispatch({ type: SET_CURSOR_SCALE, cursorScale: 1 });
+							}}
+						>
+							x
+						</CloseButton>
+					</SuccessInnerWrapper>
+				</SuccessOuterWrapper>
+			</Success>
+		</ContactOuterWraper>
+	);
 }
 
 export default Contact;

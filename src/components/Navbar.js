@@ -238,237 +238,237 @@ const navItems = [
   { title: "Contact", centerOffset: "6px" },
 ];
 
+export const navigateTo = (state, idx) => {
+	const target = state.sectionElements?.get(idx);
+	if (state.appState === APP_STATE.DESKTOP) {
+		state.mainScrollBar?.scrollIntoView(target);
+	} else {
+		target.scrollIntoView({
+			behavior: "smooth",
+			block: "start",
+			inline: "start"
+		});
+	}
+};
+
 const NavbarComponent = ({ setTheme }) => {
-  const [state, dispatch] = useContext(Context);
-  const activeSection = parseInt(state.activeSection, 10);
-  const [elementsRef, setElementsRef] = useState(new Map());
-  const [openMobileNavbar, setOpenMobileNavbar] = useState(false);
-  const [showMobileNavbarContent, setShowMobileNavbarContent] = useState(false);
-  const [middlePosition, setMiddlePosition] = useState(0);
+	const [state, dispatch] = useContext(Context);
+	const activeSection = parseInt(state.activeSection, 10);
+	const [elementsRef, setElementsRef] = useState(new Map());
+	const [openMobileNavbar, setOpenMobileNavbar] = useState(false);
+	const [showMobileNavbarContent, setShowMobileNavbarContent] = useState(false);
+	const [middlePosition, setMiddlePosition] = useState(0);
 
-  const handleClick = (idx) => {
-    const target = state.sectionElements?.get(idx);
-    if (state.appState === APP_STATE.DESKTOP) {
-      state.mainScrollBar?.scrollIntoView(target);
-    } else {
-      target.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-        inline: "start",
-      });
-    }
-  };
+	const handleThemeChange = () => {
+		if (state.theme === themes.DARK) {
+			dispatch({ type: SET_THEME, theme: themes.LIGHT });
+			setTheme(themes.LIGHT);
+		} else {
+			dispatch({ type: SET_THEME, theme: themes.DARK });
+			setTheme(themes.DARK);
+		}
+	};
 
-  const handleThemeChange = () => {
-    if (state.theme === themes.DARK) {
-      dispatch({ type: SET_THEME, theme: themes.LIGHT });
-      setTheme(themes.LIGHT);
-    } else {
-      dispatch({ type: SET_THEME, theme: themes.DARK });
-      setTheme(themes.DARK);
-    }
-  };
+	const calculateMiddlePosition = (section) => {
+		const elem = elementsRef.get(section);
 
-  const calculateMiddlePosition = (section) => {
-    const elem = elementsRef.get(section);
+		if (elem) {
+			const rect = elem.getBoundingClientRect();
+			return rect.left - rect.width;
+		}
+		return 0;
+	};
+	const handleMobileNavbar = (e) => {
+		e.preventDefault();
+		setOpenMobileNavbar(!openMobileNavbar);
+	};
 
-    if (elem) {
-      const rect = elem.getBoundingClientRect();
-      return rect.left - rect.width;
-    }
-    return 0;
-  };
-  const handleMobileNavbar = (e) => {
-    e.preventDefault();
-    setOpenMobileNavbar(!openMobileNavbar);
-  };
+	const handleMobileMenuItemClick = (section) => {
+		setOpenMobileNavbar(false);
+		const timeout = setTimeout(() => navigateTo(state, section), 800);
+		return () => clearTimeout(timeout);
+	};
 
-  const handleMobileMenuItemClick = (section) => {
-    setOpenMobileNavbar(false);
-    const timeout = setTimeout(() => handleClick(section), 800);
-    return () => clearTimeout(timeout);
-  };
+	// eslint-disable-next-line consistent-return
+	useEffect(() => {
+		if (state.appState === APP_STATE.MOBILE) {
+			const timeout = setTimeout(
+				() => setShowMobileNavbarContent(openMobileNavbar),
+				1000
+			);
+			if (openMobileNavbar) {
+				document.body.style.overflow = "hidden";
+			} else {
+				document.body.style.overflow = "inherit";
+			}
+			return () => clearTimeout(timeout);
+			// eslint-disable-next-line no-else-return
+		} else {
+			setOpenMobileNavbar(false);
+			setShowMobileNavbarContent(false);
+		}
+	}, [openMobileNavbar, state.appState]);
 
-  // eslint-disable-next-line consistent-return
-  useEffect(() => {
-    if (state.appState === APP_STATE.MOBILE) {
-      const timeout = setTimeout(
-        () => setShowMobileNavbarContent(openMobileNavbar),
-        1000
-      );
-      if (openMobileNavbar) {
-        document.body.style.overflow = "hidden";
-      } else {
-        document.body.style.overflow = "inherit";
-      }
-      return () => clearTimeout(timeout);
-      // eslint-disable-next-line no-else-return
-    } else {
-      setOpenMobileNavbar(false);
-      setShowMobileNavbarContent(false);
-    }
-  }, [openMobileNavbar, state.appState]);
+	useEffect(() => {
+		setMiddlePosition(
+			`${calculateMiddlePosition(activeSection)}px - ${
+				navItems[activeSection]?.centerOffset
+			}`
+		);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [activeSection, state.windowSize.width, state.windowSize.height]);
 
-  useEffect(() => {
-    setMiddlePosition(
-      `${calculateMiddlePosition(activeSection)}px - ${
-        navItems[activeSection]?.centerOffset
-      }`
-    );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeSection, state.windowSize.width, state.windowSize.height]);
-
-  return (
-    <>
-      <NavbarWraper>
-        <LogoIcon> &#60;/R&#62; </LogoIcon>
-        <NavbarItemsWrapper>
-          {navItems.map((item, idx) => (
-            <NavLink
-              key={item.title}
-              onMouseEnter={() => {
-                dispatch({ type: SET_CURSOR_SCALE, cursorScale: 2 });
-              }}
-              onMouseLeave={() => {
-                dispatch({ type: SET_CURSOR_SCALE, cursorScale: 1 });
-              }}
-            >
-              <Link
-                href={item.href}
-                onClick={(e) => {
-                  e.preventDefault();
-                  handleClick(idx);
-                }}
-              >
-                <span
-                  ref={(ref) => {
-                    if (
-                      elementsRef.size !== navItems.length &&
-                      !elementsRef.get(idx)
-                    ) {
-                      elementsRef.set(idx, ref);
-                      setElementsRef(elementsRef);
-                    }
-                  }}
-                >
-                  {item.title}
-                </span>
-              </Link>
-            </NavLink>
-          ))}
-          <ActiveDotWrapper>
-            <ActiveDot
-              style={{
-                left: `calc(${middlePosition})`,
-              }}
-            />
-          </ActiveDotWrapper>
-        </NavbarItemsWrapper>
-        <ThemeToggleWrapper onClick={handleThemeChange}>
-          <ThemeToggler>
-            {/* <span role="img" aria-label="smile">
+	return (
+		<>
+			<NavbarWraper>
+				<LogoIcon> &#60;/R&#62; </LogoIcon>
+				<NavbarItemsWrapper>
+					{navItems.map((item, idx) => (
+						<NavLink
+							key={item.title}
+							onMouseEnter={() => {
+								dispatch({ type: SET_CURSOR_SCALE, cursorScale: 2 });
+							}}
+							onMouseLeave={() => {
+								dispatch({ type: SET_CURSOR_SCALE, cursorScale: 1 });
+							}}
+						>
+							<Link
+								href={item.href}
+								onClick={(e) => {
+									e.preventDefault();
+									navigateTo(state, idx);
+								}}
+							>
+								<span
+									ref={(ref) => {
+										if (
+											elementsRef.size !== navItems.length &&
+											!elementsRef.get(idx)
+										) {
+											elementsRef.set(idx, ref);
+											setElementsRef(elementsRef);
+										}
+									}}
+								>
+									{item.title}
+								</span>
+							</Link>
+						</NavLink>
+					))}
+					<ActiveDotWrapper>
+						<ActiveDot
+							style={{
+								left: `calc(${middlePosition})`
+							}}
+						/>
+					</ActiveDotWrapper>
+				</NavbarItemsWrapper>
+				<ThemeToggleWrapper onClick={handleThemeChange}>
+					<ThemeToggler>
+						{/* <span role="img" aria-label="smile">
               // 🙂
             </span> */}
-            <img src="./static/smile.png" width={30} height={30} alt="" />
-          </ThemeToggler>
-          <SunGlasses
-            src="static/sunglasses.png"
-            isActive={state.theme === themes.DARK}
-          />
-        </ThemeToggleWrapper>
-        <ResumeLink
-          as="div"
-          onMouseEnter={() => {
-            dispatch({ type: SET_CURSOR_SCALE, cursorScale: 2 });
-          }}
-          onMouseLeave={() => {
-            dispatch({ type: SET_CURSOR_SCALE, cursorScale: 1 });
-          }}
-        >
-          <Link href="/resume.pdf" target="_blank" isActive>
-            <span>Résumé</span>
-          </Link>
-        </ResumeLink>
+						<img src="./static/smile.png" width={30} height={30} alt="" />
+					</ThemeToggler>
+					<SunGlasses
+						src="static/sunglasses.png"
+						isActive={state.theme === themes.DARK}
+					/>
+				</ThemeToggleWrapper>
+				<ResumeLink
+					as="div"
+					onMouseEnter={() => {
+						dispatch({ type: SET_CURSOR_SCALE, cursorScale: 2 });
+					}}
+					onMouseLeave={() => {
+						dispatch({ type: SET_CURSOR_SCALE, cursorScale: 1 });
+					}}
+				>
+					<Link href="/resume.pdf" target="_blank" isActive>
+						<span>Résumé</span>
+					</Link>
+				</ResumeLink>
 
-        {/* For Mobile or Smaller Devices */}
-        <MobileNavLink as="div" onClick={handleMobileNavbar}>
-          <MenuButton isActive onClick={handleMobileNavbar}>
-            <MenuButtonText
-              style={{
-                opacity: openMobileNavbar ? 0 : 1,
-                transform: openMobileNavbar
-                  ? "translateX(-69px)"
-                  : "translateX(0px)",
-              }}
-            >
-              Menu
-            </MenuButtonText>
-            <MenuButtonText
-              style={{
-                opacity: openMobileNavbar ? 1 : 0,
-                transform: openMobileNavbar
-                  ? "translateX(0px)"
-                  : "translateX(70px)",
-                left: "18px",
-              }}
-            >
-              Cancel
-            </MenuButtonText>
-          </MenuButton>
-        </MobileNavLink>
-        {state.appState === APP_STATE.MOBILE && (
-          <MobileNavbarWrapper
-            style={{
-              zIndex: openMobileNavbar || showMobileNavbarContent ? 1 : -1,
-              visibility: openMobileNavbar ? "visible" : "hidden",
-            }}
-          >
-            <MobileNavbarBackground
-              style={{
-                transform: openMobileNavbar ? "scale(8)" : "scale(0)",
-                zIndex: openMobileNavbar && !showMobileNavbarContent ? 2 : -1,
-              }}
-            />
-            <MobileNavbarContent
-              style={{
-                opacity: openMobileNavbar && showMobileNavbarContent ? 1 : 0,
-                zIndex: openMobileNavbar ? 3 : -1,
-                visibility: openMobileNavbar ? "visible" : "hidden",
-              }}
-            >
-              <MobileResumeButton
-                as="a"
-                href="/resume.pdf"
-                target="_blank"
-                isActive
-              >
-                <MenuButtonText style={{ left: "13px" }}>Résumé</MenuButtonText>
-              </MobileResumeButton>
-              {navItems.map((item, idx) => (
-                <div key={item.title}>
-                  <MobileNavbarMenuItemWrapper>
-                    <MobileWrapperActiveDot isActive={idx === activeSection} />
-                    <MobileNavbarMenuItem
-                      key={item}
-                      as="span"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        handleMobileMenuItemClick(idx);
-                      }}
-                      isActive={idx === activeSection}
-                    >
-                      {item.title}
-                    </MobileNavbarMenuItem>
-                  </MobileNavbarMenuItemWrapper>
-                  <br />
-                </div>
-              ))}
-            </MobileNavbarContent>
-          </MobileNavbarWrapper>
-        )}
-      </NavbarWraper>
-    </>
-  );
+				{/* For Mobile or Smaller Devices */}
+				<MobileNavLink as="div" onClick={handleMobileNavbar}>
+					<MenuButton isActive onClick={handleMobileNavbar}>
+						<MenuButtonText
+							style={{
+								opacity: openMobileNavbar ? 0 : 1,
+								transform: openMobileNavbar
+									? "translateX(-69px)"
+									: "translateX(0px)"
+							}}
+						>
+							Menu
+						</MenuButtonText>
+						<MenuButtonText
+							style={{
+								opacity: openMobileNavbar ? 1 : 0,
+								transform: openMobileNavbar
+									? "translateX(0px)"
+									: "translateX(70px)",
+								left: "18px"
+							}}
+						>
+							Cancel
+						</MenuButtonText>
+					</MenuButton>
+				</MobileNavLink>
+				{state.appState === APP_STATE.MOBILE && (
+					<MobileNavbarWrapper
+						style={{
+							zIndex: openMobileNavbar || showMobileNavbarContent ? 1 : -1,
+							visibility: openMobileNavbar ? "visible" : "hidden"
+						}}
+					>
+						<MobileNavbarBackground
+							style={{
+								transform: openMobileNavbar ? "scale(8)" : "scale(0)",
+								zIndex: openMobileNavbar && !showMobileNavbarContent ? 2 : -1
+							}}
+						/>
+						<MobileNavbarContent
+							style={{
+								opacity: openMobileNavbar && showMobileNavbarContent ? 1 : 0,
+								zIndex: openMobileNavbar ? 3 : -1,
+								visibility: openMobileNavbar ? "visible" : "hidden"
+							}}
+						>
+							<MobileResumeButton
+								as="a"
+								href="/resume.pdf"
+								target="_blank"
+								isActive
+							>
+								<MenuButtonText style={{ left: "13px" }}>Résumé</MenuButtonText>
+							</MobileResumeButton>
+							{navItems.map((item, idx) => (
+								<div key={item.title}>
+									<MobileNavbarMenuItemWrapper>
+										<MobileWrapperActiveDot isActive={idx === activeSection} />
+										<MobileNavbarMenuItem
+											key={item}
+											as="span"
+											onClick={(e) => {
+												e.preventDefault();
+												handleMobileMenuItemClick(idx);
+											}}
+											isActive={idx === activeSection}
+										>
+											{item.title}
+										</MobileNavbarMenuItem>
+									</MobileNavbarMenuItemWrapper>
+									<br />
+								</div>
+							))}
+						</MobileNavbarContent>
+					</MobileNavbarWrapper>
+				)}
+			</NavbarWraper>
+		</>
+	);
 };
 
 export default NavbarComponent;

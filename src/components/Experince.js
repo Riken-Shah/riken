@@ -7,389 +7,424 @@ import React, {
 } from "react";
 import styled from "styled-components";
 
-import ButtonElement from "./Button";
 import SlidingHeading from "./SlidingHeading";
 import { Context, sections } from "../store";
 import { device, screenSize } from "../utils";
 import { ADD_SECTION_ELEMENT, APP_STATE } from "../reducer";
 
 const data = [
-  {
-    name: "Mela",
-    tagline: "Group Shopping App",
-    roles: [
-      {
-        title: "Software Engineer Intern",
-        duration: { start: "Aug 2021", end: "Present" },
-      },
-    ],
-    points: [
-      "Build a selenium workflow to automate google merchant account creation and auto-product syncing.",
-      "Developed a feature to enable live-device tracking which will run in the background on react native mobile app.",
-    ],
-    href: "https:/sdasd.com",
-  },
-  {
-    name: "Zulip",
-    tagline: "Powerful Open Source Chat Software",
-    roles: [
-      {
-        title: "Google Summer of Code Student Developer",
-        duration: { start: "May 2021", end: "Sep 2021" },
-      },
-    ],
-    points: [
-      "Implemented emoji support for user status feature with the help of Django and jQuery.",
-      "Lowered failure rate of the puppeteer test suite by improving tests and solving various non-deterministic failures.",
-    ],
-  },
-  {
-    name: "IEM Blog",
-    tagline: "Blogs App To Inspire",
-    roles: [
-      {
-        title: "Student Developer",
-        duration: { start: "Dec 2020", end: "Jan 2021" },
-      },
-    ],
-    points: [
-      "Built notification feature for a blog app from scratch using Django and jQuery.",
-      "Awarded one of the top contributors of the program out of 300+ participants.",
-    ],
-  },
-  {
-    name: "CureHat",
-    tagline: "Telehealth Startup",
-    roles: [
-      {
-        title: "Frontend Developer Intern",
-        duration: { start: "Mar 2020", end: "May 2020" },
-      },
-    ],
-    points: [
-      "Worked closely with the founder and a team of 2 to develop the frontend of the web app using React, Redux, and Saga.",
-      "Awarded one of the top contributors of the program out of 300+ participants.",
-    ],
-  },
+	{
+		name: "Mela",
+		tagline: "Group Shopping App",
+		roles: [
+			{
+				title: "Software Engineer Intern",
+				duration: { start: "Aug 2021", end: "Present" }
+			}
+		],
+		points: [
+			"Worked with cataloging team to automate their work that saved weeks of time.",
+			"Developed a feature to enable live-device tracking which will run in the background for delivery tracking.",
+			"Developed a script to automate the core package installation and project setup on the macOS system.",
+			"Worked on several backend and frontend issues."
+		],
+		technologyImages: [
+			"static/express-logo.png",
+			"static/react-native-logo.png",
+			"static/selenium-logo.png",
+			"static/mongodb-logo.png"
+		],
+		href: "https:/sdasd.com"
+	},
+	{
+		name: "Zulip",
+		tagline: "Powerful Open Source Chat Software",
+		roles: [
+			{
+				title: "Google Summer of Code Student Developer",
+				duration: { start: "May 2021", end: "Sep 2021" }
+			}
+		],
+		points: [
+			"Implemented emoji support for user status feature with using Django and jQuery.",
+			"Lowered failure rate of the puppeteer test suite by improving tests and solving various non-deterministic failures.",
+			"Developed a script that helps save around 7GB of disk space on the server by removing unnecessary yarn cache."
+		],
+		technologyImages: [
+			"static/django.png",
+			"static/puppeteer.png",
+			"static/postgressSQL.png",
+			"static/handlebar.jpeg"
+		]
+	},
+	{
+		name: "IEM Blog",
+		tagline: "Blogs App To Inspire",
+		roles: [
+			{
+				title: "Student Developer",
+				duration: { start: "Dec 2020", end: "Jan 2021" }
+			}
+		],
+		points: [
+			"Built notification feature for a blog app from scratch using Django and jQuery.",
+			"Implemented subscribe/unsubscribe feature for blog notifications.",
+			"Awarded one of the top contributors of the program out of 300+ participants."
+		],
+		technologyImages: [
+			"static/django.png",
+			"static/postgressSQL.png",
+			"static/html5.jpeg",
+			"static/jQuery.png"
+		]
+	},
+	{
+		name: "CureHat",
+		tagline: "Telehealth Startup",
+		roles: [
+			{
+				title: "Frontend Developer Intern",
+				duration: { start: "Mar 2020", end: "May 2020" }
+			}
+		],
+		points: [
+			"Worked closely with the founder and a team of 2 to develop the frontend of the web app using React, Redux, and Saga from scratch.",
+			"Built preliminary dashboard for doctors."
+		],
+		technologyImages: [
+			"static/react.png",
+			"static/express-logo.png",
+			"static/mongodb-logo.png"
+		]
+	}
 ];
 
 const OuterWrapper = styled.div`
-  width: 100vw;
-  // Added this exponential space to make the scrolling smother
-  height: ${data.length * 100 + data.length * 100 * 1 ** data.length * 0.5}vh;
-  overflow: hidden;
-  position: relative;
+	width: 100vw;
+	// Added this exponential space to make the scrolling smother
+	height: ${data.length * 100 + data.length * 100 * 1 ** data.length * 0.5}vh;
+	overflow: hidden;
+	position: relative;
 
-  @media only screen and ${device.tablet} {
-    height: auto;
-  }
+	@media only screen and ${device.tablet} {
+		height: auto;
+	}
 `;
 
 const InnerWrapper = styled.div`
-  display: flex;
-  flex-direction: row;
-  position: absolute;
-  top: 0;
-  left: 0;
-  align-items: center;
-  jusitfy-content: center;
+	display: flex;
+	flex-direction: row;
+	position: absolute;
+	top: 0;
+	left: 0;
+	align-items: center;
+	jusitfy-content: center;
 
-  @media only screen and ${device.tablet} {
-    position: static;
-    flex-direction: column;
-    transform: translateX(0) !important;
-  }
+	@media only screen and ${device.tablet} {
+		position: static;
+		flex-direction: column;
+		transform: translateX(0) !important;
+	}
 `;
 
 const ExperienceContainer = styled.div`
-  width: 100vw;
-  height: calc(100vh - 100px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 100px 40px 0;
-  transition: opacity 0.1s ease;
-  @media only screen and ${device.tablet} {
-    padding: 0 20px;
-    margin: 5vh 0;
-    height: auto;
-    display: block;
+	width: 100vw;
+	height: calc(100vh - 100px);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 100px 40px 0;
+	transition: opacity 0.1s ease;
+	@media only screen and ${device.tablet} {
+		padding: 0 20px;
+		margin: 5vh 0;
+		height: auto;
+		display: block;
 
-    &:first-of-type {
-      margin-top: 10vh;
-    }
-  }
+		&:first-of-type {
+			margin-top: 10vh;
+		}
+	}
 
-  @media only screen and ${device.tabletSHeight} {
-    // margin: 60px 0;
-    display: block;
-  }
+	@media only screen and ${device.tabletSHeight} {
+		// margin: 60px 0;
+		display: block;
+	}
 
-  @media only screen and ${device.tabletSHeight} and ${device.tablet} {
-    // margin: 8vh 0;
-  }
+	@media only screen and ${device.tabletSHeight} and ${device.tablet} {
+		// margin: 8vh 0;
+	}
 `;
 
 const CompanyName = styled.span`
-  font-family: "Druk Wide Bold";
-  font-size: 40px;
+	font-family: "Druk Wide Bold";
+	font-size: 40px;
 
-  @media only screen and ${device.tablet} {
-    font-size: 35px;
-  }
+	@media only screen and ${device.tablet} {
+		font-size: 35px;
+	}
 
-  @media only screen and ${device.mobileL},
-    ${device.tablet} and ${device.mobileHeight} {
-    font-size: 30px;
-  }
+	@media only screen and ${device.mobileL},
+		${device.tablet} and ${device.mobileHeight} {
+		font-size: 30px;
+	}
 
-  @media only screen and ${device.mobileM} {
-    font-size: 10vw;
-  }
+	@media only screen and ${device.mobileM} {
+		font-size: 10vw;
+	}
 `;
 
 const TagLine = styled.span`
-  display: block;
-  padding-top: 15px;
-  font-size: 15px;
-  font-weight: 400;
-  color: ${({ theme }) => theme.secondary};
+	display: block;
+	padding-top: 15px;
+	font-size: 15px;
+	font-weight: 400;
+	color: ${({ theme }) => theme.secondary};
 
-  @media only screen and ${device.mobileL},
-    ${device.tablet} and ${device.mobileHeight} {
-    padding-top: 5px;
-    font-size: 12px;
-  }
+	@media only screen and ${device.mobileL},
+		${device.tablet} and ${device.mobileHeight} {
+		padding-top: 5px;
+		font-size: 12px;
+	}
 
-  @media only screen and ${device.mobileM} {
-    font-size: 4vw;
-  }
+	@media only screen and ${device.mobileM} {
+		font-size: 4vw;
+	}
 `;
 
 const SectionWrapper = styled.div`
-  display: flex;
+	display: flex;
 
-  @media only screen and ${device.tablet} {
-    height: auto;
-    margin-top: auto;
-    flex-direction: column;
-  }
+	@media only screen and ${device.tablet} {
+		height: auto;
+		margin-top: auto;
+		flex-direction: column;
+	}
 
-  @media only screen and ${device.tablet} and ${device.mobileHeight} {
-    flex-direction: row;
-  }
+	@media only screen and ${device.tablet} and ${device.mobileHeight} {
+		flex-direction: row;
+	}
 
-  @media only screen and ${device.mobileM} {
-    flex-direction: column;
-  }
+	@media only screen and ${device.mobileM} {
+		flex-direction: column;
+	}
 `;
 
 const Section = styled.div`
-  flex: 1;
+	flex: 1;
 
-  @media only screen and ${device.tablet} {
-    flex: 1;
-  }
+	@media only screen and ${device.tablet} {
+		flex: 1;
+	}
 `;
 const BulletPointSection = styled(Section)`
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  padding-top: 5px;
+	display: flex;
+	flex-direction: column;
+	flex: 1;
+	padding-top: 5px;
 `;
 
 const RolesWrapper = styled.div`
-  margin-top: 5px;
-  display: flex;
-  flex-direction: column;
+	margin-top: 5px;
+	display: flex;
+	flex-direction: column;
 `;
 
 const RoleWrapper = styled.div`
-  max-width: 500px;
-  padding-bottom: 12px;
+	max-width: 500px;
+	padding-bottom: 12px;
 
-  @media only screen and ${device.mobileL},
-    ${device.tablet} and ${device.mobileHeight} {
-    padding-bottom: 0;
-  }
+	@media only screen and ${device.mobileL},
+		${device.tablet} and ${device.mobileHeight} {
+		padding-bottom: 0;
+	}
 
-  @media only screen and ${device.tablet} and ${device.mobileHeight} {
-    max-width: 40vw;
-  }
+	@media only screen and ${device.tablet} and ${device.mobileHeight} {
+		max-width: 40vw;
+	}
 
-  @media only screen and ${device.mobileM} {
-    max-width: 100%;
-  }
+	@media only screen and ${device.mobileM} {
+		max-width: 100%;
+	}
 `;
 
 const SectionTitle = styled.span`
-  display: block;
-  padding: 15px 0;
-  font-weight: 700;
+	display: block;
+	padding: 15px 0;
+	font-weight: 700;
 
-  @media only screen and ${device.mobileL},
-    ${device.tablet} and ${device.mobileHeight} {
-    padding: 5px 0;
-    font-size: 15px;
-  }
+	@media only screen and ${device.mobileL},
+		${device.tablet} and ${device.mobileHeight} {
+		padding: 5px 0;
+		font-size: 15px;
+	}
 `;
 
 const RoleText = styled.span`
-  font-weight: 400;
-  color: ${({ theme }) => theme.secondary};
-  font-size: 15px;
-  line-height: 25px;
+	font-weight: 400;
+	color: ${({ theme }) => theme.secondary};
+	font-size: 15px;
+	line-height: 25px;
 
-  @media only screen and ${device.mobileL},
-    ${device.tablet} and ${device.mobileHeight} {
-    font-size: 13px;
-  }
+	@media only screen and ${device.mobileL},
+		${device.tablet} and ${device.mobileHeight} {
+		font-size: 13px;
+	}
 `;
 
 const BulletPoint = styled.div`
-  font-weight: 400;
-  font-size: 17px;
-  margin-bottom: 25px;
-  line-height: 30px;
+	font-weight: 400;
+	font-size: 20px;
+	margin-bottom: 30px;
+	line-height: 35px;
 
-  &:last-child {
-    // margin-bottom: 0;
-  }
+	&:last-child {
+		// margin-bottom: 0;
+	}
 
-  @media only screen and ${device.tabletS},
-    ${device.tablet} and ${device.mobileHeight} {
-    font-size: 15px;
-    line-height: 25px;
-    margin-bottom: 12px;
+	@media only screen and ${device.tabletS},
+		${device.tablet} and ${device.mobileHeight} {
+		font-size: 15px;
+		line-height: 25px;
+		margin-bottom: 12px;
 
-    &:not(:first-of-type):not(:nth-of-type(2)) {
-      display: none;
-    }
-  }
+		&:not(:first-of-type):not(:nth-of-type(2)) {
+			display: none;
+		}
+	}
 
-  @media only screen and ${device.mobileL},
-    ${device.tablet} and ${device.mobileHeight} {
-    font-size: 12px;
-    line-height: 22px;
-  }
+	@media only screen and ${device.mobileL},
+		${device.tablet} and ${device.mobileHeight} {
+		font-size: 12px;
+		line-height: 22px;
+	}
 
-  @media only screen and (max-height: ${screenSize.tablet}px) {
-    &:not(:first-of-type) {
-      display: none;
-    }
-  }
+	@media only screen and (max-height: ${screenSize.tablet}px) {
+		&:not(:first-of-type) {
+			display: none;
+		}
+	}
 `;
 
 const TechnologyWrapper = styled.div`
-  @media only screen and (max-height: 550px) {
-    display: none;
-  }
+	@media only screen and (max-height: 550px) {
+		display: none;
+	}
 `;
 
 const TechnologyImgWrapper = styled.div`
-  width: 100%;
-  // background: red;
-  // min-height: 50px;
-  width: 250px;
-  display: grid;
-  grid-row-gap: 25px;
-  grid-column-gap: 15px;
-  grid-template-columns: 1fr 1fr;
-  padding: 10px 0;
+	width: 100%;
+	// background: red;
+	// min-height: 50px;
+	width: 250px;
+	display: grid;
+	grid-row-gap: 25px;
+	grid-column-gap: 15px;
+	grid-template-columns: 1fr 1fr;
+	padding: 10px 0;
 
-  @media only screen and ${device.tabletS},
-    ${device.tablet} and ${device.mobileHeight} {
-    grid-row-gap: 15px;
-    grid-column-gap: 10px;
-    width: 180px;
-  }
+	@media only screen and ${device.tabletS},
+		${device.tablet} and ${device.mobileHeight} {
+		grid-row-gap: 15px;
+		grid-column-gap: 10px;
+		width: 180px;
+	}
 `;
 
 const Technology = styled.img`
-  width: 120px;
-  height: 50px;
-  border-radius: 15px;
+	width: 125px;
+	height: 50px;
+	border-radius: 3px;
+	border: solid 1px black;
 
-  @media only screen and ${device.mobileL},
-    ${device.tablet} and ${device.mobileHeight} {
-    width: 80px;
-    height: 30px;
-    border-radius: 5px;
-  }
+	@media only screen and ${device.mobileL},
+		${device.tablet} and ${device.mobileHeight} {
+		width: 80px;
+		height: 30px;
+		border-radius: 5px;
+	}
 
-  @media only screen and ${device.tablet} and ${device.mobileHeight}, {
-    &:not(:first-of-type):not(:nth-of-type(2)) {
-      display: none;
-    }
-  }
+	@media only screen and ${device.tablet} and ${device.mobileHeight}, {
+		&:not(:first-of-type):not(:nth-of-type(2)) {
+			display: none;
+		}
+	}
 `;
 
 const ExperinceDiv = ({
-  name,
-  tagline,
-  roles,
-  points,
-  section,
-  percentage,
-  activeSection,
-  appState,
+	name,
+	tagline,
+	roles,
+	points,
+	section,
+	percentage,
+	activeSection,
+	appState,
+	technologyImages
 }) => {
-  const breakingPointPercentage = appState === APP_STATE.MOBILE ? 60 : 40;
-  const isPartialyVisible =
-    section === activeSection - 1
-      ? percentage > breakingPointPercentage
-      : false;
-  return (
-    <ExperienceContainer
-      style={{
-        opacity:
-          section < activeSection - 1
-            ? 0
-            : isPartialyVisible &&
-              (percentage > 90 ? 0 : (100 - percentage) / 100),
-      }}
-    >
-      <SectionWrapper>
-        <Section>
-          <CompanyName>{name}</CompanyName>
-          <br />
-          <TagLine>{tagline}</TagLine>
-          <RolesWrapper>
-            <SectionTitle>{roles.length > 1 ? "Roles" : "Role"}</SectionTitle>
-            {roles.map((role) => (
-              <RoleWrapper key={role.title}>
-                <RoleText>{role.title}</RoleText>
-                <br />
-                <RoleText>
-                  ({role.duration.start}-{role.duration.end})
-                </RoleText>
-              </RoleWrapper>
-            ))}
-          </RolesWrapper>
-          <TechnologyWrapper>
-            <SectionTitle>Technology</SectionTitle>
-            <TechnologyImgWrapper>
-              <Technology src="/static/django-logo-negative.png" />
-              <Technology src="/static/handlebars.png" />
+	const breakingPointPercentage = appState === APP_STATE.MOBILE ? 60 : 40;
+	const isPartialyVisible =
+		section === activeSection - 1
+			? percentage > breakingPointPercentage
+			: false;
+	return (
+		<ExperienceContainer
+			style={{
+				opacity:
+					section < activeSection - 1
+						? 0
+						: isPartialyVisible &&
+						  (percentage > 90 ? 0 : (100 - percentage) / 100)
+			}}
+		>
+			<SectionWrapper>
+				<Section>
+					<CompanyName>{name}</CompanyName>
+					<br />
+					<TagLine>{tagline}</TagLine>
+					<RolesWrapper>
+						<SectionTitle>{roles.length > 1 ? "Roles" : "Role"}</SectionTitle>
+						{roles.map((role) => (
+							<RoleWrapper key={role.title}>
+								<RoleText>{role.title}</RoleText>
+								<br />
+								<RoleText>
+									({role.duration.start}-{role.duration.end})
+								</RoleText>
+							</RoleWrapper>
+						))}
+					</RolesWrapper>
+					<TechnologyWrapper>
+						<SectionTitle>Technology</SectionTitle>
+						<TechnologyImgWrapper>
+							{technologyImages.map((imgPath) => (
+								<Technology key={imgPath} src={imgPath} />
+							))}
+							{/* <Technology src="/static/handlebars.png" />
               <Technology src="static/jQuery-Logo.jpg" />
-              <Technology src="/static/postgress.png" />
-            </TechnologyImgWrapper>
-          </TechnologyWrapper>
-        </Section>
+              <Technology src="/static/postgress.png" /> */}
+						</TechnologyImgWrapper>
+					</TechnologyWrapper>
+				</Section>
 
-        <BulletPointSection>
-          <SectionTitle>Highlights</SectionTitle>
-          {points.map((point, idx) => (
-            // eslint-disable-next-line react/no-array-index-key
-            <BulletPoint key={idx}>{point}</BulletPoint>
-          ))}
-          <ButtonElement style={{ alignSelf: "self-start" }}>
+				<BulletPointSection>
+					<SectionTitle>Highlights</SectionTitle>
+					{points.map((point, idx) => (
+						// eslint-disable-next-line react/no-array-index-key
+						<BulletPoint key={idx}>
+							<span role="img" aria-label="right-arrow">
+								👉
+							</span>{" "}
+							{point}
+						</BulletPoint>
+					))}
+					{/* <ButtonElement style={{ alignSelf: "self-start" }}>
             Learn More
-          </ButtonElement>
-        </BulletPointSection>
-      </SectionWrapper>
-    </ExperienceContainer>
-  );
+          </ButtonElement> */}
+				</BulletPointSection>
+			</SectionWrapper>
+		</ExperienceContainer>
+	);
 };
 
 const ProgressBarWrapper = styled.div`
