@@ -53,7 +53,7 @@ const HeadingText = styled.span`
 	}
 
 	@media only screen and ${device.tabletS} {
-		font-size: 5vw;
+		font-size: 4.5vw;
 	}
 
 	@media only screen and ${device.laptop} and ${device.landscape} {
