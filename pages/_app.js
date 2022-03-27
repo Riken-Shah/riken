@@ -92,7 +92,7 @@ export default function MyApp(props) {
 					property="og:description"
 					content="Hi, I am Riken Shah. A fullstack developer based out of India."
 				/>
-				<meta property="og:image" content="/static/riken.jpeg" />
+				<meta property="og:image" content="/static/riken.jpg" />
 
 				{/* <!-- Twitter Meta Tags --> */}
 				<meta name="twitter:card" content="summary_large_image" />
@@ -101,7 +101,7 @@ export default function MyApp(props) {
 					name="twitter:description"
 					content="Hi, I am Riken Shah. A fullstack developer based out of India."
 				/>
-				<meta name="twitter:image" content="/static/riken.jpeg" />
+				<meta name="twitter:image" content="/static/riken.jpg" />
 			</Helmet>
 			<ThemeProvider theme={theme === themes.LIGHT ? lightTheme : darkTheme}>
 				<GlobalStyle />
