@@ -65,20 +65,29 @@ export default function MyApp(props) {
 
   const title = "Riken Portfolio";
   return (
-    <>
-      <Helmet>
-        <title>{title}</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta property="og:title" content={title} />
-      </Helmet>
-      <ThemeProvider theme={theme === themes.LIGHT ? lightTheme : darkTheme}>
-        <GlobalStyle />
-        <Store>
-          <Layout setTheme={changeTheme}>
-            <Component {...pageProps} />
-          </Layout>
-        </Store>
-      </ThemeProvider>
-    </>
-  );
+		<>
+			<Helmet>
+				<title>{title}</title>
+				<meta name="viewport" content="width=device-width, initial-scale=1" />
+				<meta property="og:title" content={title} />
+				<meta
+					name="description"
+					content="Hi, I am Riken Shah. A fullstack developer based out of India."
+				/>
+				<meta
+					name="twitter:card"
+					content="Hi, I am Riken Shah. A fullstack developer based out of India."
+				/>
+				<link rel="shortcut icon" href="/static/favicon.ico" />
+			</Helmet>
+			<ThemeProvider theme={theme === themes.LIGHT ? lightTheme : darkTheme}>
+				<GlobalStyle />
+				<Store>
+					<Layout setTheme={changeTheme}>
+						<Component {...pageProps} />
+					</Layout>
+				</Store>
+			</ThemeProvider>
+		</>
+	);
 }
