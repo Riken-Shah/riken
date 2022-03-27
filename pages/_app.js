@@ -68,17 +68,40 @@ export default function MyApp(props) {
 		<>
 			<Helmet>
 				<title>{title}</title>
+				<link rel="shortcut icon" href="/static/favicon.ico" />
 				<meta name="viewport" content="width=device-width, initial-scale=1" />
 				<meta property="og:title" content={title} />
 				<meta
 					name="description"
 					content="Hi, I am Riken Shah. A fullstack developer based out of India."
 				/>
+
+				{/* <!-- Google / Search Engine Tags --> */}
+				<meta itemProp="name" content="Riken Portfolio" />
 				<meta
-					name="twitter:card"
+					itemProp="description"
 					content="Hi, I am Riken Shah. A fullstack developer based out of India."
 				/>
-				<link rel="shortcut icon" href="/static/favicon.ico" />
+				<meta itemProp="image" content="" />
+
+				{/* <!-- Facebook Meta Tags --> */}
+				<meta property="og:url" content="https://riken.me" />
+				<meta property="og:type" content="website" />
+				<meta property="og:title" content="Riken Portfolio" />
+				<meta
+					property="og:description"
+					content="Hi, I am Riken Shah. A fullstack developer based out of India."
+				/>
+				<meta property="og:image" content="/static/riken.png" />
+
+				{/* <!-- Twitter Meta Tags --> */}
+				<meta name="twitter:card" content="summary_large_image" />
+				<meta name="twitter:title" content="Riken Portfolio" />
+				<meta
+					name="twitter:description"
+					content="Hi, I am Riken Shah. A fullstack developer based out of India."
+				/>
+				<meta name="twitter:image" content="/static/riken.png" />
 			</Helmet>
 			<ThemeProvider theme={theme === themes.LIGHT ? lightTheme : darkTheme}>
 				<GlobalStyle />
