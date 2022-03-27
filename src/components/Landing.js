@@ -32,7 +32,7 @@ const Section = styled.div`
 const IntroSpan = styled.span`
 	font-size: 18px;
 	font-weight: 300;
-	margin-bottom: 12px;
+	margin: 12px 0;
 
 	@media only screen and ${device.mobileL} {
 		font-size: 3vw;
@@ -49,11 +49,11 @@ const HeadingText = styled.span`
 	font-family: "Druk Wide Bold";
 
 	@media only screen and ${device.tablet} {
-		font-size: 28px;
+		font-size: 25px;
 	}
 
 	@media only screen and ${device.tabletS} {
-		font-size: 4.5vw;
+		font-size: 4.4vw;
 	}
 
 	@media only screen and ${device.laptop} and ${device.landscape} {
@@ -96,6 +96,11 @@ const FloatingElements = styled.div`
 
 	@media only screen and ${device.mobileL},
 		${device.tablet} and ${device.potrait} {
+		width: 15vw;
+		height: 15vw;
+	}
+
+	@media only screen and ${device.tabletS} {
 		width: 15vw;
 		height: 15vw;
 	}
@@ -144,7 +149,7 @@ function LandingComponent() {
 		<LandingWrapper ref={refCallback} data-index={sections.home}>
 			<Section>
 				<HeadingText>
-					Creating Stuff For Internet{" "}
+					Building Stuff For Internet{" "}
 					<span role="img" aria-label="rocket">
 						🚀
 					</span>{" "}
@@ -185,7 +190,7 @@ function LandingComponent() {
 				url="static/3d-semicolon.png"
 				width={120}
 				height={100}
-				top="20%"
+				top={state?.windowSize?.width < 450 ? "20%" : "10%"}
 				// top={`calc(10% + ${scrollingPosition.y * 0.3}px)`}
 				style={
 					{
@@ -193,7 +198,7 @@ function LandingComponent() {
 						// transform: `rotateX(${moveX}deg) rotateY(${moveY}deg)`,
 					}
 				}
-				right="15%"
+				right={state?.windowSize?.height < 550 ? "5%" : "15%"}
 			/>
 		</LandingWrapper>
 	);
