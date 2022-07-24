@@ -54,36 +54,36 @@ const SocialMediaImg = styled.img`
 `;
 function Footer() {
   return (
-    <FooterWrapper>
-      <EndLine>
-        Designed and Developed with{" "}
-        <span role="img" aria-label="heart">
-          💙{" "}
-        </span>
-        by me! © 2021 Riken Shah&#39;s Portfolio
-      </EndLine>
-      <SocialMediaHandleWrapper>
-        <SocialMediaLink href="https://github.com/Riken-Shah/" target="_blank">
-          <SocialMediaImg src="static/github.svg" />
-        </SocialMediaLink>
-        <SocialMediaLink href="https://twitter.com/_RikenShah/" target="_blank">
-          <SocialMediaImg src="static/twitter.svg" />
-        </SocialMediaLink>
-        <SocialMediaLink
-          href="https://www.instagram.com/riken.py/"
-          target="_blank"
-        >
-          <SocialMediaImg src="static/instagram.svg" />
-        </SocialMediaLink>
-        <SocialMediaLink
-          href="https://www.linkedin.com/in/shah-riken/"
-          target="_blank"
-        >
-          <SocialMediaImg src="static/linkedln.svg" />
-        </SocialMediaLink>
-      </SocialMediaHandleWrapper>
-    </FooterWrapper>
-  );
+		<FooterWrapper>
+			<EndLine>
+				Designed and Developed with{" "}
+				<span role="img" aria-label="heart">
+					💙{" "}
+				</span>
+				by me! © 2022 Riken Shah&#39;s Portfolio
+			</EndLine>
+			<SocialMediaHandleWrapper>
+				<SocialMediaLink href="https://github.com/Riken-Shah/" target="_blank">
+					<SocialMediaImg src="static/github.svg" />
+				</SocialMediaLink>
+				<SocialMediaLink href="https://twitter.com/_RikenShah/" target="_blank">
+					<SocialMediaImg src="static/twitter.svg" />
+				</SocialMediaLink>
+				<SocialMediaLink
+					href="https://www.instagram.com/riken.py/"
+					target="_blank"
+				>
+					<SocialMediaImg src="static/instagram.svg" />
+				</SocialMediaLink>
+				<SocialMediaLink
+					href="https://www.linkedin.com/in/shah-riken/"
+					target="_blank"
+				>
+					<SocialMediaImg src="static/linkedln.svg" />
+				</SocialMediaLink>
+			</SocialMediaHandleWrapper>
+		</FooterWrapper>
+	);
 }
 
 export default Footer;

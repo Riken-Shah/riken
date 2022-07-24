@@ -23,10 +23,11 @@ const data = [
 			}
 		],
 		points: [
-			"Worked with cataloging team to automate their work that saved weeks of time.",
+			"Implemented the referral feature from scratch.",
+			"Implemented the coupon feature.",
+			"Improved the existing cron jobs to reduce recurring failures to 95%.",
 			"Developed a feature to enable live-device tracking which will run in the background for delivery tracking.",
-			"Developed a script to automate the core package installation and project setup on the macOS system.",
-			"Worked on several backend and frontend issues."
+			"Worked with cataloging team to automate their work that saved weeks of time."
 		],
 		technologyImages: [
 			"static/express-logo.png",
