@@ -63,7 +63,7 @@
     "now-start": "yarn serve",
     "lint:fix": "eslint src/components/** ./pages/** -c .eslintrc.json --fix --ext js,jsx",
     "lint:css": "stylelint './src/**/*.js'",
-    "now-build": "NODE_ENV=production next build"
+    "now-build": "next build"
   },
   "pre-commit": "lint-staged",
   "lint-staged": {
